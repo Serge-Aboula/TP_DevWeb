@@ -14,12 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
 from django.urls import path
 
-from Trombinoscoop.views import welcome
+from Trombinoscoop.views import welcome, login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('welcome/', welcome),    
+    path('', login),    
+    path('login/', login),    
 ]
