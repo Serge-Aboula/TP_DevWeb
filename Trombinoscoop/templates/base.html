@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trombinoscoop - {% block title %}Bienvenue{% endblock %}</title>
+</head>
+<body id="{% block bodyId %}genericPage{% endblock %}">
+    <header>
+        {% block headerContent %}{% endblock %}
+    </header>
+    <section id="content">
+        {% block Content %}{% endblock %}
+    </section>
+    
+</body>
+</html>
