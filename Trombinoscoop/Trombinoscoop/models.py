@@ -13,6 +13,7 @@ class Person(models.Model):
     # Dans un cas réel, nous ne devrions pas stocker le mot de passe en clair.
     password = models.CharField(max_length=32)
     friends = models.ManyToManyField('self')
+    faculty = models.ForeignKey('Faculty')
 
 class Message(models.Model):
     author = models.ForeignKey('Person')
@@ -33,4 +34,11 @@ class Job(models.Model):
 class Cursus(models.Model):
     title = models.CharField(max_length = 30)
     
-    
+class Employe(Person):
+    office = models.CharField(max_length = 30)
+    campus = models.ForeignKey('Campus')
+    job = models.ForeignKey('Job')
+
+class Student(Person):
+    cursus = models.ForeignKey('Cursus')
+    year = models.IntegerField()
