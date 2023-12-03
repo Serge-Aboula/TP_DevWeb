@@ -6,7 +6,10 @@
 
 {% block Content %}
 <form method="POST" action="login/">
-    {% csrf_token %}   
+    {% csrf_token %}    
+    {% if error %}
+    <p class="error">{{ error }}</p>  
+    {% endif %}        
     <p>
         <label for="email">Courriel :</label>
         <input type="email" name="email" id="email" size="30"/> 
