@@ -13,10 +13,10 @@ class Person(models.Model):
     # Dans un cas réel, nous ne devrions pas stocker le mot de passe en clair.
     password = models.CharField(max_length=32)
     friends = models.ManyToManyField('self')
-    faculty = models.ForeignKey('Faculty')
+    faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE)
 
 class Message(models.Model):
-    author = models.ForeignKey('Person')
+    author = models.ForeignKey('Person', on_delete=models.CASCADE)
     content = models.TextField()
     publication_date = models.DateField()
 
@@ -36,9 +36,9 @@ class Cursus(models.Model):
     
 class Employe(Person):
     office = models.CharField(max_length = 30)
-    campus = models.ForeignKey('Campus')
-    job = models.ForeignKey('Job')
+    campus = models.ForeignKey('Campus', on_delete=models.CASCADE)
+    job = models.ForeignKey('Job', on_delete=models.CASCADE)
 
 class Student(Person):
-    cursus = models.ForeignKey('Cursus')
+    cursus = models.ForeignKey('Cursus', on_delete=models.CASCADE)
     year = models.IntegerField()
