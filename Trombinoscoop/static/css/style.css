@@ -45,7 +45,13 @@ form input[type="submit"]{
     text-align: center;
 }
 a{color: #3b5998;}
-form p.error{
+/* form p.error{
     margin-left: 160px;
+    color: #d23d24;
+} */
+ul.errorlist{
+    margin-left: 160px;
+    padding: 0;
+    list-style-type: none;
     color: #d23d24;
 }
