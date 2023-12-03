@@ -1,6 +1,9 @@
-body{
+*{
     margin: 0;
-    padding: 0;
+    padding: 0; 
+}
+
+body{    
     font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
     font-size: 11px;
     color: #000333;
@@ -21,6 +24,13 @@ body#loginPage section#content{
     width: 500px;
     margin: 0 0 0 -250px;
     padding: 0;
+}
+body#welcomePage section#content{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 150px;
+
 }
 form label{
     display: block;
