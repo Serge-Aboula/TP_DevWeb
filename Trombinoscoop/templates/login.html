@@ -5,7 +5,8 @@
 {% block bodyId %}loginPage{% endblock %}
 
 {% block Content %}
-<form action="???" method="get">
+<form action="login" method="post">
+    {% csrf_token %}
     <p>
         <label for="email">Courriel :</label>
         <input type="email" name="email" id="email" size="30"/> 
