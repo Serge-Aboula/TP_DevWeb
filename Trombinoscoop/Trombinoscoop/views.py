@@ -8,8 +8,17 @@ def welcome(request):
                   {'current_date_time': datetime.now})
 
 def login(request):
-    form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    if not request.POST:
+        form = LoginForm()
+        return render(request, 'login.html', {'form': form})
+    
+    form = LoginForm(request.POST)
+    
+    if not form.is_valid():
+        return render(request, 'login.html', {'form': form})
+    
+    return redirect('/welcome')
+    
     
 # def login(request):
 #     # Teste si le formulaire a été envoyé
