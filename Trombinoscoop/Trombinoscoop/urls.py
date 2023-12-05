@@ -19,11 +19,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from Trombinoscoop.views import welcome, login
+from Trombinoscoop.views import welcome, login, register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('welcome/', welcome),    
     path('', login),    
     path('login/', login),    
+    path('register/', register),    
 ]
