@@ -9,7 +9,7 @@ class Person(models.Model):
     birth_date = models.DateField()
     email = models.EmailField()
     home_phone_number = models.CharField(max_length = 20)
-    cell_phone_number = models.CharField(max_length = 20)
+    cellphone_number = models.CharField(max_length = 20)
     # Dans un cas réel, nous ne devrions pas stocker le mot de passe en clair.
     password = models.CharField(max_length=32)
     friends = models.ManyToManyField('self')
@@ -34,7 +34,7 @@ class Job(models.Model):
 class Cursus(models.Model):
     title = models.CharField(max_length = 30)
     
-class Employe(Person):
+class Employee(Person):
     office = models.CharField(max_length = 30)
     campus = models.ForeignKey('Campus', on_delete=models.CASCADE)
     job = models.ForeignKey('Job', on_delete=models.CASCADE)
