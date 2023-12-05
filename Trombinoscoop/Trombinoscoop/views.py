@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
 
-from Trombinoscoop.forms import LoginForm
+from Trombinoscoop.forms import LoginForm, StudentProfileForm
 
 def welcome(request):
     return render(request, 'welcome.html',
@@ -18,6 +18,19 @@ def login(request):
         return render(request, 'login.html', {'form': form})
     
     return redirect('/welcome')
+
+def register(request):
+    if not request.GET:
+        form = StudentProfileForm()
+        return render(request, 'user_profile.html', {'form': form})
+    
+    form = StudentProfileForm(request.GET)
+    
+    if not form.is_valid():
+        return render(request, 'user_profile.html', {'form': form})
+    
+    form.save()
+    return redirect('/login')
     
     
 # def login(request):
