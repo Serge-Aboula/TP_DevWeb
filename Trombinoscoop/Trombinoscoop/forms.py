@@ -1,4 +1,5 @@
 from django import forms
+from Trombinoscoop.models import Person
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Email')
@@ -10,7 +11,8 @@ class LoginForm(forms.Form):
         password = cleaned_data.get("password")
         
         if email and password:
-            if email != 'a@b.ga' and password != '1':
+            person = Person.objects.filter(password=password, email=email)
+            if not person:
                 raise forms.ValidationError("Email ou mot de passe invalide.")
         
         return cleaned_data
