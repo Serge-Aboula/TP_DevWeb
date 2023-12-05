@@ -1,5 +1,5 @@
 from django import forms
-from Trombinoscoop.models import Person
+from Trombinoscoop.models import Person, Student
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Email')
@@ -17,4 +17,8 @@ class LoginForm(forms.Form):
         
         return cleaned_data
 
+class StudentProfileForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        exclude = ('friends',)
 
