@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
 
-from Trombinoscoop.forms import LoginForm, StudentProfileForm
+from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
 
 def welcome(request):
     return render(request, 'welcome.html',
@@ -20,17 +20,34 @@ def login(request):
     return redirect('/welcome')
 
 def register(request):
-    if not request.GET:
-        form = StudentProfileForm()
-        return render(request, 'user_profile.html', {'form': form})
+    if not request.GET or  not 'profileType' in request.GET:
+        studentForm = StudentProfileForm(prefix='st')
+        employeeForm = EmployeeProfileForm(prefix='em')
+        return render(request, 'user_profile.html', {'studentForm': studentForm,
+                                                     'employeeForm': employeeForm})
     
-    form = StudentProfileForm(request.GET)
+    studentForm = StudentProfileForm(prefix='st')
+    employeeForm = EmployeeProfileForm(prefix='em')
     
-    if not form.is_valid():
-        return render(request, 'user_profile.html', {'form': form})
+    if request.GET['profileType'] == 'student':
+        studentForm = StudentProfileForm(request.GET, prefix='st')
     
-    form.save()
-    return redirect('/login')
+        if not studentForm.is_valid():
+            return render(request, 'user_profile.html', {'studentForm': studentForm,
+                                                         'employeeForm': employeeForm})
+        
+        studentForm.save()
+        return redirect('/login')
+    
+    elif request.GET['profileType'] == 'employee':
+        employeeForm = EmployeeProfileForm(request.GET, prefix='em')
+    
+        if not employeeForm.is_valid():
+            return render(request, 'user_profile.html', {'employeeForm': employeeForm,
+                                                         'studentForm': studentForm})
+        
+        employeeForm.save()
+        return redirect('/login')
     
     
 # def login(request):
