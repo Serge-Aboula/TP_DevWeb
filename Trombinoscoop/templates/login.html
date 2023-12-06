@@ -5,12 +5,12 @@
 {% block bodyId %}loginPage{% endblock %}
 
 {% block Content %}
-<form method="POST" action="login/">
+<form method="POST" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <p>
         <input type="submit" value="Se connecter"/>
-        <a href=" ">Créer un compte</a> 
+        <a href="register/">Créer un compte</a> 
     </p> 
 </form>
 {% endblock %}
