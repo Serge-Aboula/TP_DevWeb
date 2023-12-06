@@ -6,12 +6,11 @@
 
 {% block Content %}
 <h1>Création d'un compte</h1>
-<form method="GET" action="register/">
+<form method="GET" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <p>
         <input type="submit" value="Créer un compte"/>
-        <a href=" ">Créer un compte</a> 
     </p> 
 </form>
 {% endblock %}
