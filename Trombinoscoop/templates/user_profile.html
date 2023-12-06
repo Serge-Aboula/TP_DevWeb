@@ -6,11 +6,47 @@
 
 {% block Content %}
 <h1>Création d'un compte</h1>
-<form method="GET" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
+<form>
     <p>
+        <label for="profileType">Vous êtes :</label> 
+        <select id="profileType">
+            <option value="student" {% if studentForm.is_bound %} select="selected" {% endif %}>
+                Etudiant 
+            </option> 
+            <option value="employee" {% if employeeForm.is_bound %} select="selected" {% endif %}>
+                Employé 
+            </option>
+        </select>
+    </p>
+</form>
+<form method="GET" action="" id="studentForm">
+    {% csrf_token %}
+    {{ studentForm.as_p }}
+    <p>
+        <input type="hidden" name="profileType" value="student"/>
         <input type="submit" value="Créer un compte"/>
     </p> 
 </form>
+<form method="GET" action="" id="employeeForm">
+    {% csrf_token %}
+    {{ employeeForm.as_p }}
+    <p>
+        <input type="hidden" name="profileType" value="employee"/>
+        <input type="submit" value="Créer un compte"/>
+    </p> 
+</form>
+<script type="text/javascript">
+    function displayRightForm(){
+        if($('#profileType').val() == 'student'){
+            $('#employeeForm').hide(); 
+            $('#studentForm').show();
+        }
+        else{
+            $('#studentForm').hide()
+            $('#employeeForm').show() 
+        }
+    }
+    $(document).ready(displayRightForm);
+    $('#profileType').change(displayRightForm);
+</script>
 {% endblock %}
