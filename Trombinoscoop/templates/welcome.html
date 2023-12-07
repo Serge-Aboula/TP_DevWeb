@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Page d'accueil{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block bodyId %}welcomePage{% endblock %}
 
 {% block Content %}
 <h1>Page d'accueil</h1>
+<p>
+    {{ logged_user.first_name }} {{ logged_user.last_name }}, bienvenue sur Trombinoscoop !
+</p>
 <p>Nous sommes le {{ current_date_time }}</p>
 {% endblock %}
