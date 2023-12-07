@@ -23,8 +23,7 @@ def welcome(request):
     if not 'logged_user_id' in request.session:
         return redirect('/login')
     
-    logged_user_id = request.session['logged_user_id']
-    logged_user = Person.objects.get(id=logged_user_id) 
+    logged_user = get_logged_user_from_request(request) 
     
     return render(request, 'welcome.html',
                   {'current_date_time': datetime.now,
