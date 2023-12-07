@@ -20,10 +20,10 @@ def get_logged_user_from_request(request):
         return None
     
 def welcome(request):
-    if not 'logged_user_id' in request.session:
-        return redirect('/login')
-    
     logged_user = get_logged_user_from_request(request) 
+    
+    if not logged_user:
+        return redirect('/login')    
     
     return render(request, 'welcome.html',
                   {'current_date_time': datetime.now,
