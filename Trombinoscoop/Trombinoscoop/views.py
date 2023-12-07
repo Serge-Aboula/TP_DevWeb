@@ -1,12 +1,19 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
-from Trombinoscoop.Trombinoscoop.models import Person
 
+from Trombinoscoop.models import Person
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
 
 def welcome(request):
+    if not 'logged_user_id' in request.session:
+        return redirect('/login')
+    
+    logged_user_id = request.session['logged_user_id']
+    logged_user = Person.objects.get(id=logged_user_id)
+    
     return render(request, 'welcome.html',
-                  {'current_date_time': datetime.now})
+                  {'current_date_time': datetime.now,
+                   'logged_user': logged_user})
 
 def login(request):
     if not request.POST:
@@ -19,7 +26,7 @@ def login(request):
         return render(request, 'login.html', {'form': form})
     
     user_email = form.cleaned_data['email']
-    logged_user = Person.Objects.get(email=user_email)
+    logged_user = Person.objects.get(email=user_email)
     request.session['logged_user_id'] = logged_user.id
     
     return redirect('/welcome')
