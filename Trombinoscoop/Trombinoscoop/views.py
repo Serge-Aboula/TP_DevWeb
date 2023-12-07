@@ -1,15 +1,30 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
 
-from Trombinoscoop.models import Person
+from Trombinoscoop.models import Person, Student, Employee
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
 
+def get_logged_user_from_request(request):
+    if not 'logged_user_id' in request.session:
+        return None
+    
+    logged_user_id = request.session['logged_user_id']
+    # On cherche un étudiant
+    if len(Student.objects.filter(id=logged_user_id)) == 1:
+        return Student.objects.get(id=logged_user_id)
+    # On cherche un employé
+    elif len(Employee.objects.filter(id=logged_user_id)) == 1:
+        return Employee.objects.get(id=logged_user_id)
+    # Si on n'a rien trouvé
+    else:
+        return None
+    
 def welcome(request):
     if not 'logged_user_id' in request.session:
         return redirect('/login')
     
     logged_user_id = request.session['logged_user_id']
-    logged_user = Person.objects.get(id=logged_user_id)
+    logged_user = Person.objects.get(id=logged_user_id) 
     
     return render(request, 'welcome.html',
                   {'current_date_time': datetime.now,
