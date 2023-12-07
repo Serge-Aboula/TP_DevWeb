@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
+from Trombinoscoop.Trombinoscoop.models import Person
 
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
 
@@ -16,6 +17,10 @@ def login(request):
     
     if not form.is_valid():
         return render(request, 'login.html', {'form': form})
+    
+    user_email = form.cleaned_data['email']
+    logged_user = Person.Objects.get(email=user_email)
+    request.session['logged_user_id'] = logged_user.id
     
     return redirect('/welcome')
 
