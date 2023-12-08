@@ -14,6 +14,8 @@ class Person(models.Model):
     password = models.CharField(max_length=32)
     friends = models.ManyToManyField('self')
     faculty = models.ForeignKey('Faculty', on_delete=models.CASCADE)
+    # Autres champs
+    person_type = 'generic'
     
     def __str__(self) -> str:
         return self.first_name + ' ' + self.last_name
@@ -60,7 +62,11 @@ class Employee(Person):
     office = models.CharField(max_length = 30)
     campus = models.ForeignKey('Campus', on_delete=models.CASCADE)
     job = models.ForeignKey('Job', on_delete=models.CASCADE)
+    # Autres champs
+    person_type = 'employee'
 
 class Student(Person):
     cursus = models.ForeignKey('Cursus', on_delete=models.CASCADE)
     year = models.IntegerField()
+    # Autres champs
+    person_type = 'student'
