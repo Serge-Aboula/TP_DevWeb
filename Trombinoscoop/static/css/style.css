@@ -99,3 +99,18 @@ body#userProfilePage section#content h1{
     color: #3b5998;
     border-bottom: 1px solid #3b5988;
 }
+body#welcomePage section#content{
+    width: 800px;
+    margin: 0 0 0 -400px;
+}
+body#welcomePage section#messageList{
+    position: absolute;
+    width: 600px;
+    background-color: rgb(180, 60, 60);
+}
+body#welcomePage section#friendList{
+    position: absolute;
+    width: 200px;
+    right: 0;
+    background-color: yellow;
+}
