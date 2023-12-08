@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
 
-from Trombinoscoop.models import Person, Student, Employee
+from Trombinoscoop.models import Message, Person, Student, Employee
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
 
 def get_logged_user_from_request(request):
@@ -21,13 +21,17 @@ def get_logged_user_from_request(request):
     
 def welcome(request):
     logged_user = get_logged_user_from_request(request) 
+    friendMessages = None
     
     if not logged_user:
+        friendMessages = Message.objects.filter(\
+            author__friends=logged_user).order_by('-publication_date')
         return redirect('/login')    
     
     return render(request, 'welcome.html',
                   {'current_date_time': datetime.now,
-                   'logged_user': logged_user})
+                   'logged_user': logged_user,
+                   'friendMessages': friendMessages})
 
 def login(request):
     if not request.POST:
