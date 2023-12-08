@@ -4,10 +4,32 @@
 
 {% block bodyId %}welcomePage{% endblock %}
 
-{% block Content %}
+{% block headerContent %}
+<p id="name">{{ logged_user.first_name }} {{ logged_user.last_name }}</p>
+<p id="function">    
+    {% if logged_user.person_type == 'student' %}
+        Etudiant en 
+        {% if logged_user.year == 1 %}
+            {{ logged_user.year }}ère année
+        {% else %}
+            {{ logged_user.year }}ème année
+        {% endif %}
+        {{ logged_user.cursus.title }}
+    {% else %}
+        {{ logged_user.job.title|capfirst }}
+        dans la faculté {{ logged_user.faculty }}
+    {% endif %}
+</p>
+<p id="profileLinks">
+    <a href="???" class="buttonLink" >Voir le profil</a>
+    <a href="???" class="buttonLink" >Modifier le profil</a>
+</p>
+{% endblock %}
+
+{% comment %} {% block Content %}
 <h1>Page d'accueil</h1>
 <p>
     {{ logged_user.first_name }} {{ logged_user.last_name }}, bienvenue sur Trombinoscoop !
 </p>
 <p>Nous sommes le {{ current_date_time }}</p>
-{% endblock %}
+{% endblock %} {% endcomment %}
