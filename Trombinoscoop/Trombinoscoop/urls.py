@@ -24,7 +24,7 @@ from Trombinoscoop.views import welcome, login, register
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('welcome/', welcome),    
-    path('', login),    
+    path('', welcome), # au lieu de login   
     path('login/', login),    
     path('register/', register),    
 ]
