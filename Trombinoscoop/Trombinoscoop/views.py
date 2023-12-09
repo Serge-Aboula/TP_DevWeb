@@ -21,17 +21,17 @@ def get_logged_user_from_request(request):
     
 def welcome(request):
     logged_user = get_logged_user_from_request(request) 
-    friendMessages = None
     
-    if not logged_user:
-        friendMessages = Message.objects.filter(\
-            author__friends=logged_user).order_by('-publication_date')
+    if not logged_user:        
         return redirect('/login')    
+    
+    friendMessages = Message.objects.filter(\
+            author__friends=logged_user).order_by('-publication_date')
     
     return render(request, 'welcome.html',
                   {'current_date_time': datetime.now,
                    'logged_user': logged_user,
-                   'friendMessages': friendMessages})
+                   'friendMessages': friendMessages})   
 
 def login(request):
     if not request.POST:
