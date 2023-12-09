@@ -47,7 +47,7 @@
 </section>
 <section id="friendList">
     <p class="title">Mes amis</p>
-    <p><a href="???" class="buttonLink">Ajouter</a></p>
+    <p><a href="addFriend/" class="buttonLink">Ajouter</a></p>
     <ul>        
     {% for friend in logged_user.friends.all %}
         <li><a href="???">{{ friend.first_name }} {{ friend.last_name }}</a></li>
