@@ -4,7 +4,7 @@
 
 {% block bodyId %}loginPage{% endblock %}
 
-{% block Content %}
+{% block content %}
 <form method="POST" action="">
     {% csrf_token %}
     {{ form.as_p }}
