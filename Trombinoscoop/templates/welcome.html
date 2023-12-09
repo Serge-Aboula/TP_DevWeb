@@ -46,7 +46,13 @@
     </ul>
 </section>
 <section id="friendList">
-    test
+    <p class="title">Mes amis</p>
+    <p><a href="???" class="buttonLink">Ajouter</a></p>
+    <ul>        
+    {% for friend in logged_user.friends.all %}
+        <li><a href="???">{{ friend.first_name }} {{ friend.last_name }}</a></li>
+    {% endfor %}            
+    </ul>
 </section>
 {% endblock %}
 
