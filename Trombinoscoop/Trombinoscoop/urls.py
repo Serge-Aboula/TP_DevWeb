@@ -19,7 +19,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from Trombinoscoop.views import welcome, login, register
+from Trombinoscoop.views import welcome, login, register, add_friend
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('', welcome), # au lieu de login   
     path('login/', login),    
     path('register/', register),    
+    path('addFriend/', add_friend),    
 ]
