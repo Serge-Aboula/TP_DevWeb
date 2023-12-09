@@ -1,9 +1,37 @@
 from datetime import datetime
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
 
-from Trombinoscoop.models import Message, Person, Student, Employee
-from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm
+from Trombinoscoop.models import Person, Student, Employee, Message
+from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, addFriendForm
 
+def add_friend(request):
+    # On récupère l'id de session 
+    logged_user = get_logged_user_from_request(request)
+    
+    # Si l'utilisateur n'est pas authentifié
+    if not logged_user:        
+        return redirect('/login')
+    
+    # Si le formulaire n'est pas envoyé
+    if not request.GET:
+        form = addFriendForm()
+        return render(request, 'add_friend.html', {'form': form})
+    
+    form = addFriendForm(request.GET)
+    
+    # Si le formulaire n'est pas valide
+    if not form.is_valid():
+        return render(request, 'add_friend.html', {'form': form})
+    
+    new_friend_email = form.cleaned_data['email']
+    newFriend = Person.objects.get(email=new_friend_email)
+    logged_user.friends.add(newFriend)
+    logged_user.save()
+    
+    return redirect('/welcome')
+    
+    
+    
 def get_logged_user_from_request(request):
     if not 'logged_user_id' in request.session:
         return None
