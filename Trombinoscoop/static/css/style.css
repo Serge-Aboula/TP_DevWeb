@@ -106,11 +106,33 @@ body#welcomePage section#content{
 body#welcomePage section#messageList{
     position: absolute;
     width: 600px;
-    background-color: rgb(180, 60, 60);
+    /* background-color: rgb(180, 60, 60); */
 }
 body#welcomePage section#friendList{
     position: absolute;
     width: 200px;
     right: 0;
     background-color: yellow;
+}
+form.inlineForm label{
+    display: inline;
+    float: none;
+    padding: 0;    
+}
+form.inlineForm input[type="text"]{
+    display: inline-block;
+    width: 150px;
+}
+form.inlineForm input[type="submit"]{
+    margin: 0;
+}
+section#messageList ul{
+    margin: 20px 0 0 0;
+    list-style: none;
+}
+section#messageList ul li{
+    margin-bottom: 10px;
+}
+section#messageList ul li p{
+    margin: 8px 0 0 0;
 }
