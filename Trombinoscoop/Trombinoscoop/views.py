@@ -25,6 +25,12 @@ def welcome(request):
     if not logged_user:        
         return redirect('/login')    
     
+    if 'newMessage' in request.GET and request.GET['newMessage'] != '': 
+        newMessage = Message(author=logged_user,
+                             content=request.GET['newMessage'],
+                             publication_date=datetime.today())
+        newMessage.save()
+    
     friendMessages = Message.objects.filter(\
             author__friends=logged_user).order_by('-publication_date')
     
