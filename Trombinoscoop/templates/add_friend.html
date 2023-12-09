@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1>Ajout d'un ami</h1>
-<form method="POST" action="">
+<form method="GET" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <p><input type="submit" value="Ajouter"/></p> 
