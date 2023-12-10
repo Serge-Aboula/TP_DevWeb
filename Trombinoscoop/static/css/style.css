@@ -150,3 +150,13 @@ section#friendList ul{
 section#friendList ul li{    
     margin: 0 0 5px 0;
 }
+section#content h1{
+    font-size: 22px;
+    color: #3b5998;
+    border-bottom: 1px solid #3b5998;
+    text-align: center;
+    margin-bottom: 25px;
+}
+section#content p.buttonAction{
+    margin-top: 10px;
+}
