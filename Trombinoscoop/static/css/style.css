@@ -160,3 +160,21 @@ section#content h1{
 section#content p.buttonAction{
     margin-top: 10px;
 }
+section#content dl.fieldList{
+    display: block;
+    width: 250px;
+    float: left;
+    text-align: right;
+    padding: 0 10px 0 0;
+    font-weight: bold;    
+}
+section#content dl.fieldList dd{
+    display: block;
+    width: 450px;
+    padding: 0;
+    margin: 0 0 10px 0;   
+}
+section#content p#showProfileNavigationButtons{
+    margin: 30px 0 10px 300px;
+    clear: left;
+}
