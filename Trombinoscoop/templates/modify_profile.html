@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Modification de mon profil{% endblock %}
+
+{% block bodyId %}modifyProfilePage{% endblock %}
+
+{% block content %}
+<h1>Modification de mon profil</h1>
+<form method="GET" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p><input type="submit" value="Modifier"/></p>
+</form>
+{% endblock %}
