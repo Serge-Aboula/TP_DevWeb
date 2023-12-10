@@ -4,6 +4,33 @@ from django.shortcuts import render, redirect
 from Trombinoscoop.models import Person, Student, Employee, Message
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, addFriendForm
 
+def show_profile(request):
+    # On récupère l'id de session 
+    logged_user = get_logged_user_from_request(request)
+    
+    # Si l'utilisateur n'est pas authentifié
+    if not logged_user:        
+        return redirect('/login')    
+    
+    if not 'userToShow' in request.GET or request.GET['userToShow'] == '':
+        return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    
+    # L'id de la personne dont on veut voir le profil est bien passé en paramètre 
+    user_to_show_id = int(request.GET['userToShow'])
+    person = Person.objects.filter(id=user_to_show_id)
+    
+    if  len(person) != 1:
+        return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    
+    user_to_show = None
+    
+    if not Student.objects.filter(id=user_to_show_id):
+        user_to_show = Employee.objects.get(id=user_to_show_id)
+    
+    user_to_show = Student.objects.get(id=user_to_show_id)
+    
+    return render(request, 'show_profile.html', {'user_to_show': user_to_show}) 
+
 def add_friend(request):
     # On récupère l'id de session 
     logged_user = get_logged_user_from_request(request)
