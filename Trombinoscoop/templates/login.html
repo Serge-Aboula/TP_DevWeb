@@ -10,7 +10,7 @@
     {{ form.as_p }}
     <p>
         <input type="submit" value="Se connecter"/>
-        <a href="register/">Créer un compte</a> 
+        <a href="{% url 'register' %}">Créer un compte</a> 
     </p> 
 </form>
 {% endblock %}
