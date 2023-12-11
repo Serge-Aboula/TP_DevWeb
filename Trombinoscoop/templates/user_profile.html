@@ -51,7 +51,7 @@
     $(document).ready(displayRightForm);
     $('#profileType').change(displayRightForm);
     
-    function checkEmailField(){
+    async function checkEmailField(){
         //alert('Courriel introduit. On va maintenant le valider.')
         fieldValue = $('input#id_st-email').val()
         $.ajax({
@@ -60,7 +60,9 @@
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
                 if (data != ''){
-                    alert(data);
+                    //alert(data);
+                    $('input#id_st-email').parent().prev('.errorlist').remove();
+                    $('input#id_st-email').parent().before(data);
                 }
             }
         })
@@ -72,7 +74,8 @@
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
                 if (data != ''){
-                    alert(data);
+                    $('input#id_em-email').parent().prev('.errorlist').remove();
+                    $('input#id_em-email').parent().before(data);
                 }
             }
         })
