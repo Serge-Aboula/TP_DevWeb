@@ -14,7 +14,7 @@
     <dt>Date de naissance :</dt>
         <dd>{{ user_to_show.birth_date }}</dd>
     <dt>Matricule :</dt>
-        <dd>{{ user_to_show.registratrion_number }}</dd>
+        <dd>{{ user_to_show.registration_number }}</dd>
     <dt>Email :</dt>
         <dd>{{ user_to_show.email }}</dd>
     <dt>Tel. fixe :</dt>
@@ -37,5 +37,5 @@
         <dd>{{ user_to_show.job.title }}</dd>   
 {% endif %}    
 </dl>
-<p id="showProfileNavigationButtons"><a href="welcome/" class="buttonLink">Retour</a></p>
+<p id="showProfileNavigationButtons"><a href="{% url '' %}" class="buttonLink">Retour</a></p>
 {% endblock %}
