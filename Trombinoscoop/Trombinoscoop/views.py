@@ -1,5 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
+from django import forms
+from django.http import HttpResponse
 
 from Trombinoscoop.models import Person, Student, Employee, Message
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, addFriendForm
@@ -89,60 +91,6 @@ def logout(request):
     request.session.flush()
     return redirect('/login')
 
-def modify_profile(request):    
-    logged_user = get_logged_user_from_request(request)
-    
-    if not logged_user:        
-        return redirect('/login')
-    
-    form = None
-    
-    if not request.GET:
-        if type(logged_user) == Student:
-            form = StudentProfileForm(instance=logged_user)
-        else:
-            form = EmployeeProfileForm(instance=logged_user)
-        
-        return render(request, 'modify_profile.html', {'form': form})
-    
-    if type(logged_user) == Student:
-        form = StudentProfileForm(instance=logged_user)
-    else:
-        form = EmployeeProfileForm(instance=logged_user)
-    
-    if not form.is_valid():    
-        return render(request, 'modify_profile.html', {'form': form}) 
-
-    form.save()
-    return redirect('/welcome')
-    
-def show_profile(request, id):
-    # On récupère l'id de session 
-    logged_user = get_logged_user_from_request(request)
-    
-    # Si l'utilisateur n'est pas authentifié
-    if not logged_user:        
-        return redirect('/login')    
-    
-    # if not 'userToShow' in request.GET or request.GET['userToShow'] == '':
-    #     return render(request, 'show_profile.html', {'user_to_show': logged_user})
-    
-    # L'id de la personne dont on veut voir le profil est bien passé en paramètre 
-    user_to_show_id = id #int(request.GET['userToShow'])
-    person = Person.objects.filter(id=user_to_show_id)
-    
-    if  len(person) != 1:
-        return render(request, 'show_profile.html', {'user_to_show': logged_user})
-    
-    user_to_show = None
-    
-    if not Student.objects.filter(id=user_to_show_id):
-        user_to_show = Employee.objects.get(id=user_to_show_id)
-    
-    user_to_show = Student.objects.get(id=user_to_show_id)
-    
-    return render(request, 'show_profile.html', {'user_to_show': user_to_show}) 
-
 def add_friend(request):
     # On récupère l'id de session 
     logged_user = get_logged_user_from_request(request)
@@ -169,6 +117,78 @@ def add_friend(request):
     
     return redirect('/welcome')
 
+def show_profile(request, id):
+    # On récupère l'id de session 
+    logged_user = get_logged_user_from_request(request)
+    
+    # Si l'utilisateur n'est pas authentifié
+    if not logged_user:        
+        return redirect('/login')    
+    
+    # if not 'userToShow' in request.GET or request.GET['userToShow'] == '':
+    #     return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    
+    # L'id de la personne dont on veut voir le profil est bien passé en paramètre 
+    user_to_show_id = id #int(request.GET['userToShow'])
+    person = Person.objects.filter(id=user_to_show_id)
+    
+    if  len(person) != 1:
+        return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    
+    user_to_show = None
+    
+    if not Student.objects.filter(id=user_to_show_id):
+        user_to_show = Employee.objects.get(id=user_to_show_id)
+    
+    user_to_show = Student.objects.get(id=user_to_show_id)
+    
+    return render(request, 'show_profile.html', {'user_to_show': user_to_show})
+
+def modify_profile(request):    
+    logged_user = get_logged_user_from_request(request)
+    
+    if not logged_user:        
+        return redirect('/login')
+    
+    form = None
+    
+    if not request.GET:
+        if type(logged_user) == Student:
+            form = StudentProfileForm(instance=logged_user)
+        else:
+            form = EmployeeProfileForm(instance=logged_user)
+        
+        return render(request, 'modify_profile.html', {'form': form})
+    
+    if type(logged_user) == Student:
+        form = StudentProfileForm(instance=logged_user)
+    else:
+        form = EmployeeProfileForm(instance=logged_user)
+    
+    if not form.is_valid():    
+        return render(request, 'modify_profile.html', {'form': form}) 
+
+    form.save()
+    return redirect('/welcome')
+
+def ajax_check_email_field(request):
+    html_to_return = ''
+    if 'value' in request.GET:
+        field = forms.EmailField()
+        try:
+            field.clean(request.GET['value'])
+        except forms.ValidationError as ve:
+            html_to_return = '<ul class="errorlist">'
+            for message in ve.messages:
+                html_to_return += '<li>' + message + '</li>'
+            html_to_return += '<ul>'
+        
+        if not html_to_return:
+            if len(Person.objects.filter(email=request.GET['value'])) >= 1:
+                html_to_return = '<ul class="errorlist">'
+                html_to_return += '<li>Cette adresse est déjà utilisée !</li>'
+                html_to_return += '<ul>'
+    return HttpResponse(html_to_return)
     
 # def login(request):
 #     # Teste si le formulaire a été envoyé
