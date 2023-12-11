@@ -89,6 +89,9 @@ form input[type="submit"]{
     text-align: center;
 }
 a{color: #3b5998;}
+form p{
+    margin-bottom: 10px;
+}
 /* form p.error{
     margin-left: 160px;
     color: #d23d24;
@@ -99,10 +102,10 @@ ul.errorlist{
     list-style-type: none;
     color: #d23d24;
 }
-body#userProfilePage section#content h1{
+section#content h1{
     text-align: center;
     font-size: 22px;
-    margin: 0 60px 30px 60px;
+    margin: 0 60px 20px;
     padding: 0 0 5px 0;
     color: #3b5998;
     border-bottom: 1px solid #3b5988;
@@ -157,13 +160,6 @@ section#friendList ul{
 }
 section#friendList ul li{    
     margin: 0 0 5px 0;
-}
-section#content h1{
-    font-size: 22px;
-    color: #3b5998;
-    border-bottom: 1px solid #3b5998;
-    text-align: center;
-    margin-bottom: 25px;
 }
 section#content p.buttonAction{
     margin-top: 10px;
