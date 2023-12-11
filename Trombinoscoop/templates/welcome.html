@@ -21,9 +21,10 @@
     {% endif %}
 </p>
 <p id="profileLinks">
-    <a href="showProfile?userToShow={{ logged_user.id }}" class="buttonLink">Voir le profil</a>
-    <a href="???" class="buttonLink">Modifier le profil</a>
+    <a href="{% url 'show_profile' logged_user.id %}" class="buttonLink">Voir le profil</a>
+    <a href="{% url 'modify_profile' %}" class="buttonLink">Modifier le profil</a>
 </p>
+<p><a href="{% url 'login' %}" id="backToLogin">Se déconnecter</a></p>
 {% endblock %}
 {% block content %}
 <section id="messageList">
@@ -36,7 +37,7 @@
     {% for message in friendMessages %}
     <li>
         <p>
-            <a href="showProfile?userToShow={{ message.author.id }}">{{ message.author.first_name }}
+            <a href="{% url 'show_profile' message.author.id %}">{{ message.author.first_name }}
             {{ message.author.last_name }}
             </a> dit:
         </p>
@@ -47,10 +48,10 @@
 </section>
 <section id="friendList">
     <p class="title">Mes amis</p>
-    <p><a href="addFriend/" class="buttonLink">Ajouter</a></p>
+    <p><a href="addFriend" class="buttonLink">Ajouter</a></p>
     <ul>        
     {% for friend in logged_user.friends.all %}
-        <li><a href="showProfile?userToShow={{ friend.id }}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
+        <li><a href="{% url 'show_profile' friend.id %}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
     {% endfor %}            
     </ul>
 </section>

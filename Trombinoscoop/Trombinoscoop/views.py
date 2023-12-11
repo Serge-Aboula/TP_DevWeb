@@ -4,96 +4,6 @@ from django.shortcuts import render, redirect
 from Trombinoscoop.models import Person, Student, Employee, Message
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, addFriendForm
 
-def show_profile(request):
-    # On récupère l'id de session 
-    logged_user = get_logged_user_from_request(request)
-    
-    # Si l'utilisateur n'est pas authentifié
-    if not logged_user:        
-        return redirect('/login')    
-    
-    if not 'userToShow' in request.GET or request.GET['userToShow'] == '':
-        return render(request, 'show_profile.html', {'user_to_show': logged_user})
-    
-    # L'id de la personne dont on veut voir le profil est bien passé en paramètre 
-    user_to_show_id = int(request.GET['userToShow'])
-    person = Person.objects.filter(id=user_to_show_id)
-    
-    if  len(person) != 1:
-        return render(request, 'show_profile.html', {'user_to_show': logged_user})
-    
-    user_to_show = None
-    
-    if not Student.objects.filter(id=user_to_show_id):
-        user_to_show = Employee.objects.get(id=user_to_show_id)
-    
-    user_to_show = Student.objects.get(id=user_to_show_id)
-    
-    return render(request, 'show_profile.html', {'user_to_show': user_to_show}) 
-
-def add_friend(request):
-    # On récupère l'id de session 
-    logged_user = get_logged_user_from_request(request)
-    
-    # Si l'utilisateur n'est pas authentifié
-    if not logged_user:        
-        return redirect('/login')
-    
-    # Si le formulaire n'est pas envoyé
-    if not request.GET:
-        form = addFriendForm()
-        return render(request, 'add_friend.html', {'form': form})
-    
-    form = addFriendForm(request.GET)
-    
-    # Si le formulaire n'est pas valide
-    if not form.is_valid():
-        return render(request, 'add_friend.html', {'form': form})
-    
-    new_friend_email = form.cleaned_data['email']
-    newFriend = Person.objects.get(email=new_friend_email)
-    logged_user.friends.add(newFriend)
-    logged_user.save()
-    
-    return redirect('/welcome')
-    
-    
-    
-def get_logged_user_from_request(request):
-    if not 'logged_user_id' in request.session:
-        return None
-    
-    logged_user_id = request.session['logged_user_id']
-    # On cherche un étudiant
-    if len(Student.objects.filter(id=logged_user_id)) == 1:
-        return Student.objects.get(id=logged_user_id)
-    # On cherche un employé
-    elif len(Employee.objects.filter(id=logged_user_id)) == 1:
-        return Employee.objects.get(id=logged_user_id)
-    # Si on n'a rien trouvé
-    else:
-        return None
-    
-def welcome(request):
-    logged_user = get_logged_user_from_request(request) 
-    
-    if not logged_user:        
-        return redirect('/login')    
-    
-    if 'newMessage' in request.GET and request.GET['newMessage'] != '': 
-        newMessage = Message(author=logged_user,
-                             content=request.GET['newMessage'],
-                             publication_date=datetime.today())
-        newMessage.save()
-    
-    friendMessages = Message.objects.filter(\
-            author__friends=logged_user).order_by('-publication_date')
-    
-    return render(request, 'welcome.html',
-                  {'current_date_time': datetime.now,
-                   'logged_user': logged_user,
-                   'friendMessages': friendMessages})   
-
 def login(request):
     if not request.POST:
         form = LoginForm()
@@ -139,7 +49,126 @@ def register(request):
         
         employeeForm.save()
         return redirect('/login')
+
+def get_logged_user_from_request(request):
+    if not 'logged_user_id' in request.session:
+        return None
     
+    logged_user_id = request.session['logged_user_id']
+    # On cherche un étudiant
+    if len(Student.objects.filter(id=logged_user_id)) == 1:
+        return Student.objects.get(id=logged_user_id)
+    # On cherche un employé
+    elif len(Employee.objects.filter(id=logged_user_id)) == 1:
+        return Employee.objects.get(id=logged_user_id)
+    # Si on n'a rien trouvé
+    else:
+        return None
+   
+def welcome(request):
+    logged_user = get_logged_user_from_request(request) 
+    
+    if not logged_user:        
+        return redirect('/login')    
+    
+    if 'newMessage' in request.GET and request.GET['newMessage'] != '': 
+        newMessage = Message(author=logged_user,
+                             content=request.GET['newMessage'],
+                             publication_date=datetime.today())
+        newMessage.save()
+    
+    friendMessages = Message.objects.filter(\
+            author__friends=logged_user).order_by('-publication_date')
+    
+    return render(request, 'welcome.html',
+                  {'current_date_time': datetime.now,
+                   'logged_user': logged_user,
+                   'friendMessages': friendMessages})   
+
+def logout(request):
+    request.session.flush()
+    return redirect('/login')
+
+def modify_profile(request):    
+    logged_user = get_logged_user_from_request(request)
+    
+    if not logged_user:        
+        return redirect('/login')
+    
+    form = None
+    
+    if not request.GET:
+        if type(logged_user) == Student:
+            form = StudentProfileForm(instance=logged_user)
+        else:
+            form = EmployeeProfileForm(instance=logged_user)
+        
+        return render(request, 'modify_profile.html', {'form': form})
+    
+    if type(logged_user) == Student:
+        form = StudentProfileForm(instance=logged_user)
+    else:
+        form = EmployeeProfileForm(instance=logged_user)
+    
+    if not form.is_valid():    
+        return render(request, 'modify_profile.html', {'form': form}) 
+
+    form.save()
+    return redirect('/welcome')
+    
+def show_profile(request, id):
+    # On récupère l'id de session 
+    logged_user = get_logged_user_from_request(request)
+    
+    # Si l'utilisateur n'est pas authentifié
+    if not logged_user:        
+        return redirect('/login')    
+    
+    # if not 'userToShow' in request.GET or request.GET['userToShow'] == '':
+    #     return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    
+    # L'id de la personne dont on veut voir le profil est bien passé en paramètre 
+    user_to_show_id = id #int(request.GET['userToShow'])
+    person = Person.objects.filter(id=user_to_show_id)
+    
+    if  len(person) != 1:
+        return render(request, 'show_profile.html', {'user_to_show': logged_user})
+    
+    user_to_show = None
+    
+    if not Student.objects.filter(id=user_to_show_id):
+        user_to_show = Employee.objects.get(id=user_to_show_id)
+    
+    user_to_show = Student.objects.get(id=user_to_show_id)
+    
+    return render(request, 'show_profile.html', {'user_to_show': user_to_show}) 
+
+def add_friend(request):
+    # On récupère l'id de session 
+    logged_user = get_logged_user_from_request(request)
+    
+    # Si l'utilisateur n'est pas authentifié
+    if not logged_user:        
+        return redirect('/login')
+    
+    # Si le formulaire n'est pas envoyé
+    if not request.GET:
+        form = addFriendForm()
+        return render(request, 'add_friend.html', {'form': form})
+    
+    form = addFriendForm(request.GET)
+    
+    # Si le formulaire n'est pas valide
+    if not form.is_valid():
+        return render(request, 'add_friend.html', {'form': form})
+    
+    new_friend_email = form.cleaned_data['email']
+    newFriend = Person.objects.get(email=new_friend_email)
+    logged_user.friends.add(newFriend)
+    logged_user.save()
+    
+    return redirect('/welcome')
+
     
 # def login(request):
 #     # Teste si le formulaire a été envoyé

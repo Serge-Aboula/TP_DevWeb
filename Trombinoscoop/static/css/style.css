@@ -55,6 +55,14 @@ a.buttonLink{
     text-align: center;
     text-decoration: none;
 }
+body#welcomePage header p a#backToLogin{
+    position: absolute;
+    top: 45px;
+    right: 160px;
+    color: #fff;
+    text-decoration: none;
+    margin: 4px;
+}
 /* body#welcomePage section#content{
     text-align: center;
 } */
