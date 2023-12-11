@@ -35,6 +35,8 @@
         <input type="submit" value="Créer un compte"/>
     </p> 
 </form>
+
+{% block javascript %}
 <script type="text/javascript">
     function displayRightForm(){
         if($('#profileType').val() == 'student'){
@@ -48,5 +50,36 @@
     }
     $(document).ready(displayRightForm);
     $('#profileType').change(displayRightForm);
+    
+    function checkEmailField(){
+        //alert('Courriel introduit. On va maintenant le valider.')
+        fieldValue = $('input#id_st-email').val()
+        $.ajax({
+            url: '{% url 'ajax_check_email_field' %}',
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', value: fieldValue},
+            type: 'GET',
+            success: function(data, textStatus, XMLHttpRequest){
+                if (data != ''){
+                    alert(data);
+                }
+            }
+        })
+        
+        fieldValue = $('input#id_em-email').val()
+        $.ajax({
+            url: '{% url 'ajax_check_email_field' %}',
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', value: fieldValue},
+            type: 'GET',
+            success: function(data, textStatus, XMLHttpRequest){
+                if (data != ''){
+                    alert(data);
+                }
+            }
+        })
+    }
+    $(document).ready(function(){$('input#id_st-email').focusout(checkEmailField)});
+    $(document).ready(function(){$('input#id_em-email').focusout(checkEmailField)});
 </script>
+{% endblock javascript %}   
+
 {% endblock %}
