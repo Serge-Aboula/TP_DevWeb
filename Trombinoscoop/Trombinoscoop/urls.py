@@ -33,4 +33,7 @@ urlpatterns = [
     #path('showProfile', show_profile, name='show_profile'),    
     path('modifyProfile/', views.modify_profile, name='modify_profile'),    
     path('ajax/checkEmailField/', views.ajax_check_email_field, name='ajax_check_email_field'),    
+    #path('ajax/addFriend/email=<str:email>/', views.ajax_add_friend, name='ajax_add_friend'),    
+    path('ajax/addFriend/', views.ajax_add_friend, name='ajax_add_friend'),           
+    #path('ajax/addFriend/', views.ajax_add_friend, name='ajax_add_friend'),    
 ]
