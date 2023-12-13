@@ -53,10 +53,10 @@
     
     async function checkEmailField(){
         //alert('Courriel introduit. On va maintenant le valider.')
-        fieldValue = $('input#id_st-email').val()
+        let fieldValue = $('input#id_st-email').val();
         $.ajax({
             url: '{% url 'ajax_check_email_field' %}',
-            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', value: fieldValue},
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
                 if (data != ''){
@@ -67,10 +67,10 @@
             }
         })
         
-        fieldValue = $('input#id_em-email').val()
+        fieldValue = $('input#id_em-email').val();
         $.ajax({
             url: '{% url 'ajax_check_email_field' %}',
-            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', value: fieldValue},
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
                 if (data != ''){
