@@ -189,6 +189,23 @@ def ajax_check_email_field(request):
                 html_to_return += '<li>Cette adresse est déjà utilisée !</li>'
                 html_to_return += '<ul>'
     return HttpResponse(html_to_return)
+
+def ajax_add_friend(request):
+    html_to_return = ''
+    logged_user = get_logged_user_from_request(request)
+    if logged_user:        
+        new_friend_email = ''
+        if 'newFriendEmail' in request.GET:            
+            new_friend_email = request.GET['newFriendEmail']
+            if len(Person.objects.filter(email=new_friend_email)) == 1:
+                new_friend = Person.objects.get(email=new_friend_email)
+                # logged_user.friends.add(new_friend)
+                # logged_user.save()
+
+                html_to_return = '''<li><a href="{% url 'show_profile' new_friend.id %}">'''
+                html_to_return += new_friend.first_name + ''' ''' + new_friend.last_name
+                html_to_return += '''</a></li>'''        
+    return HttpResponse(html_to_return)
     
 # def login(request):
 #     # Teste si le formulaire a été envoyé
