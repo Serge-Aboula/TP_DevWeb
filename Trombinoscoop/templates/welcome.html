@@ -48,13 +48,40 @@
 </section>
 <section id="friendList">
     <p class="title">Mes amis</p>
-    <p><a href="addFriend" class="buttonLink">Ajouter</a></p>
+    <form method="GET" action="" class="inlineForm">
+        <input type="email" name="newFriendEmail" id="newFriendInput" placeholder="Email"/>
+        <input type="submit" value="Ajouter"/>
+    </form>
+    <p><a href="{% url 'add_friend' %}" class="buttonLink">Ajouter</a></p>
     <ul>        
     {% for friend in logged_user.friends.all %}
         <li><a href="{% url 'show_profile' friend.id %}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
     {% endfor %}            
     </ul>
 </section>
+{% block javascript %} {# comment here #}
+<script type="text/javascript">
+    async function addFriend(event){
+        event.preventDefault();
+        let email = $('#newFriendInput').val();
+        $.ajax({
+            url: '{% url 'ajax_add_friend' %}', 
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newFriendEmail': email},
+            type: 'GET',
+            success: function(data, textStatus, XMLHttpRequest){
+                if(data != ''){
+                    alert(data);
+                    //$('#friendList form').parent().prev('.errorlist').remove();
+                    //$('#friendList form').parent().before(data);
+                }
+            }
+        })
+        //return false;
+    }
+    
+    $(document).ready(function(){$('#friendList form').submit(addFriend)});
+</script>
+{% endblock javascript %}
 {% endblock %}
 
 {% comment %} {% block Content %}
