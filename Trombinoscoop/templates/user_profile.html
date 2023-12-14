@@ -39,7 +39,7 @@
 {% block javascript %}
 <script type="text/javascript">
     function displayRightForm(){
-        if($('#profileType').val() == 'student'){
+        if($('#profileType').val() === 'student'){
             $('#employeeForm').hide(); 
             $('#studentForm').show();
         }
