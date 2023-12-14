@@ -52,7 +52,7 @@
         <input type="email" name="newFriendEmail" id="newFriendInput" placeholder="Email"/>
         <input type="submit" value="Ajouter"/>
     </form>
-    <p><a href="{% url 'add_friend' %}" class="buttonLink">Ajouter</a></p>
+    {% comment %} <p><a href="{% url 'add_friend' %}" class="buttonLink">Ajouter</a></p> {% endcomment %}
     <ul>        
     {% for friend in logged_user.friends.all %}
         <li><a href="{% url 'show_profile' friend.id %}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
@@ -70,9 +70,8 @@
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
                 if(data != ''){
-                    alert(data);
-                    //$('#friendList form').parent().prev('.errorlist').remove();
-                    //$('#friendList form').parent().before(data);
+                    //alert(data);
+                    $('#friendList ul').prepend(data);
                 }
             }
         })
