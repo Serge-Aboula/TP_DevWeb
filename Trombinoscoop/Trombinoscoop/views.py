@@ -20,7 +20,7 @@ def login(request):
     logged_user = Person.objects.get(email=user_email)
     request.session['logged_user_id'] = logged_user.id
     
-    return redirect('/welcome')
+    return redirect('/')
 
 def register(request):
     if not request.GET or  not 'profileType' in request.GET:
@@ -115,7 +115,7 @@ def add_friend(request):
     logged_user.friends.add(newFriend)
     logged_user.save()
     
-    return redirect('/welcome')
+    return redirect('/')
 
 def show_profile(request, id):
     # On récupère l'id de session 
@@ -169,7 +169,7 @@ def modify_profile(request):
         return render(request, 'modify_profile.html', {'form': form}) 
 
     form.save()
-    return redirect('/welcome')
+    return redirect('/')
 
 def ajax_check_email_field(request):
     html_to_return = ''
@@ -199,12 +199,12 @@ def ajax_add_friend(request):
             new_friend_email = request.GET['newFriendEmail']
             if len(Person.objects.filter(email=new_friend_email)) == 1:
                 new_friend = Person.objects.get(email=new_friend_email)
-                # logged_user.friends.add(new_friend)
-                # logged_user.save()
-
-                html_to_return = '''<li><a href="{% url 'show_profile' new_friend.id %}">'''
-                html_to_return += new_friend.first_name + ''' ''' + new_friend.last_name
-                html_to_return += '''</a></li>'''        
+                if not logged_user.friends.filter(id=new_friend.id).exists():
+                    logged_user.friends.add(new_friend)
+                    logged_user.save()
+                    html_to_return = '<li><a href="{% url ' + "'show_profile' " + str(new_friend.id) +' %}">'
+                    html_to_return += new_friend.first_name + ' ' + new_friend.last_name
+                    html_to_return += '</a></li>'        
     return HttpResponse(html_to_return)
     
 # def login(request):
@@ -227,4 +227,4 @@ def ajax_add_friend(request):
 #        return render(request, 'login.html', {'error': error}) 
     
 #     # Tout est bon on va à la page d'accueil
-#     return redirect('/welcome')
+#     return redirect('/')
