@@ -17,7 +17,7 @@
         {{ logged_user.cursus.title }}
     {% else %}
         {{ logged_user.job.title|capfirst }}
-        dans la faculté {{ logged_user.faculty }}
+        dans la Faculté {{ logged_user.faculty }}
     {% endif %}
 </p>
 <p id="profileLinks">
@@ -33,8 +33,8 @@
         <input type="text" name="newMessage" id="newMessageInput"/>
         <input type="submit" value="Publier"/>
     </form>
-    <ul>        
-    {% for message in friendMessages %}
+    <ul id="messagesList">        
+    {% comment %} {% for message in friendMessages %}
     <li>
         <p>
             <a href="{% url 'show_profile' message.author.id %}">{{ message.author.first_name }}
@@ -43,7 +43,7 @@
         </p>
         <p>{{ message.content }}</p>
     </li>
-    {% endfor %}            
+    {% endfor %} {% endcomment %}
     </ul>
 </section>
 <section id="friendList">
@@ -53,25 +53,111 @@
         <input type="submit" value="Ajouter"/>
     </form>
     {% comment %} <p><a href="{% url 'add_friend' %}" class="buttonLink">Ajouter</a></p> {% endcomment %}
-    <ul>        
-    {% for friend in logged_user.friends.all %}
+    <ul id=friendsList>        
+    {% comment %} {% for friend in logged_user.friends.all %}
         <li><a href="{% url 'show_profile' friend.id %}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
-    {% endfor %}            
+    {% endfor %} {% endcomment %}
     </ul>
 </section>
 {% block javascript %} {# comment here #}
-<script type="text/javascript">
-    async function addFriend(event){
+<script defer type="text/javascript">
+    
+    function getFriends(){
+        $.ajax({
+            url: "{% url 'json_get_friends' %}",
+            type: 'GET',
+            //dataType: 'json'
+            success: function(response){
+                //console.log(response);
+                $('#friendsList').empty();
+                for (key in response.friendsList){
+                    //console.log(response.friendsList);
+                    //console.log(response.friendsList[key]);
+                    //console.log(response.friendsList[key].author[0].last_name);
+                    let friendId = response.friendsList[key].id;                                      
+                    let friendLastName = response.friendsList[key].last_name;
+                    let friendFirstName = response.friendsList[key].first_name;                                     
+
+                    let temp = "<li><a href=\"showProfile/userToShow="+friendId+"\">"+friendLastName+" "+friendFirstName+"</a></li>";                    
+                    $('#friendsList').append(temp)   
+                    
+                } 
+                
+            },
+            error: function(response){
+                console.log("Erreur !");                        
+            }
+        })
+    }
+    
+    $(document).ready(function(){setInterval(getFriends, 500);});
+        
+    function getMessages(){
+        $.ajax({
+            url: "{% url 'json_get_messages' %}",
+            type: 'GET',
+            //dataType: 'json'
+            success: function(response){
+                //console.log(response);
+                $('#messagesList').empty();
+                for (key in response.friendMessages){
+                    //console.log(response.friendMessages);
+                    //console.log(response.friendMessages[key]);
+                    //console.log(response.friendMessages[key].author[0].last_name);
+                    let msgAuthorId = response.friendMessages[key].author[0].id;
+                    //msgAuthorId = msgAuthorId.toString() //msgAuthorId = parseInt(msgAuthorId, 10)
+                    let msgAuthorContent = response.friendMessages[key].content
+                    let msgAuthorLastName = response.friendMessages[key].author[0].last_name;
+                    let msgAuthorFirstName = response.friendMessages[key].author[0].first_name;                                     
+
+                    //console.log(msgAuthorId);
+                    //console.log(typeof msgAuthorId);
+                    
+                    {% comment %} //let li = document.createElement('li')
+                    //let p1 = document.createElement('p')
+                    //let p2 = document.createElement('p')
+                    //let a = document.createElement('a')
+                    
+                    //$('a').text('{{ msgAuthorFN }} {{ msgAuthorLN }}')
+                    //$('a').attr('href', "{% url 'show_profile' msgAuthorId %}")
+                    //$('p2').append(a)
+                    //$('a').after('dit:')
+                    //$('p1').text('{{ msgAuthorC }}')
+                    //$('li').append(p2)
+                    //$('p2').after(p1))
+                    //$('#messagesList').append(li) {% endcomment %}
+
+                    let temp = "<li><p><a href=\"showProfile/userToShow="+msgAuthorId+"\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit:</p><p>"+msgAuthorContent+"</p></li>";
+                    {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' "+msgAuthorId+" %}\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit:</p><p>"+msgAuthorContent+"</p></li>"; {% endcomment %}
+                    {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' ${msgAuthorId} %}\">{{ ${msgAuthorFN} }} {{ ${msgAuthorLN} }}</a> dit:</p><p>{{ ${msgAuthorC} }}</p></li>"; {% endcomment %}
+                    $('#messagesList').append(temp)   
+                    
+                } 
+                
+            },
+            error: function(response){
+                console.log("Erreur !");                        
+            }
+        })
+    }
+    
+    $(document).ready(function(){setInterval(getMessages, 500);});
+    
+    function addFriend(event){
         event.preventDefault();
         let email = $('#newFriendInput').val();
         $.ajax({
-            url: '{% url 'ajax_add_friend' %}', 
+            url: "{% url 'ajax_add_friend' %}", 
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newFriendEmail': email},
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
                 if(data != ''){
                     //alert(data);
                     $('#friendList ul').prepend(data);
+                    alert("Ami ajouté !")
+                }
+                else{
+                    alert("Ami non ajouté !")
                 }
             }
         })
