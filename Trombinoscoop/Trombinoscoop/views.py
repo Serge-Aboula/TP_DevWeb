@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django import forms
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from Trombinoscoop.models import Person, Student, Employee, Message
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, addFriendForm
@@ -79,14 +79,57 @@ def welcome(request):
                              publication_date=datetime.today())
         newMessage.save()
     
-    friendMessages = Message.objects.filter(\
-            author__friends=logged_user).order_by('-publication_date')
-    
-    return render(request, 'welcome.html',
-                  {'current_date_time': datetime.now,
-                   'logged_user': logged_user,
-                   'friendMessages': friendMessages})   
+    return render(request, 'welcome.html', {"current_date_time": datetime.now,'logged_user': logged_user})
 
+def json_get_messages(request):
+    logged_user = get_logged_user_from_request(request) 
+    
+    if not logged_user:        
+        return redirect('/login')
+    
+    friendMessages = list(Message.objects.filter(
+            author__friends=logged_user).values('author', 'content', 'publication_date'))#.filter(\
+            #author__friends=logged_user).values('author', 'content', 'publication_date'))#.order_by('-publication_date')
+    #print(friendMessages)
+    for key in friendMessages:
+        #print(key)
+        #print(friendMessages) 
+        #print(key['author'])
+        msgAuthor = list(Person.objects.filter(id=key['author']).values('id', 'last_name', 'first_name'))
+        key['author'] = msgAuthor
+        #print(key['author'])
+    
+    if logged_user.person_type == 'student':
+        logged_user = list(Student.objects.filter(id=logged_user.id).values('id', 'last_name', 'first_name'))
+    else:
+        logged_user = list(Employee.objects.filter(id=logged_user.id).values('id', 'last_name', 'first_name'))
+    #print(logged_user)   
+            
+    return JsonResponse({"logged_user": logged_user,
+                         "friendMessages": friendMessages
+                        }, safe=False)
+
+def json_get_friends(request):
+    logged_user = get_logged_user_from_request(request) 
+    
+    if not logged_user:        
+        return redirect('/login')
+    
+    friendsList = list(logged_user.friends.all().values('id', 'last_name', 'first_name'))
+    #print(friendsList)
+    #for elt in friendsList:
+        #print(elt)   
+    
+    if logged_user.person_type == 'student':
+        logged_user = list(Student.objects.filter(id=logged_user.id).values('id', 'last_name', 'first_name'))
+    else:
+        logged_user = list(Employee.objects.filter(id=logged_user.id).values('id', 'last_name', 'first_name'))
+    #print(logged_user)   
+            
+    return JsonResponse({"logged_user": logged_user,
+                         "friendsList": friendsList
+                        }, safe=False)
+    
 def logout(request):
     request.session.flush()
     return redirect('/login')
@@ -138,9 +181,9 @@ def show_profile(request, id):
     user_to_show = None
     
     if not Student.objects.filter(id=user_to_show_id):
-        user_to_show = Employee.objects.get(id=user_to_show_id)
-    
-    user_to_show = Student.objects.get(id=user_to_show_id)
+        user_to_show = Employee.objects.get(id=user_to_show_id)    
+    else:
+        user_to_show = Student.objects.get(id=user_to_show_id)
     
     return render(request, 'show_profile.html', {'user_to_show': user_to_show})
 
@@ -161,15 +204,19 @@ def modify_profile(request):
         return render(request, 'modify_profile.html', {'form': form})
     
     if type(logged_user) == Student:
-        form = StudentProfileForm(instance=logged_user)
+        form = StudentProfileForm(request.GET, instance=logged_user)
     else:
-        form = EmployeeProfileForm(instance=logged_user)
-    
-    if not form.is_valid():    
+        form = EmployeeProfileForm(request.GET, instance=logged_user)
+    #print(type(logged_user) == Student)
+    #print(form.is_valid())
+    if not form.is_valid():
+        #print('Formulaire non valide !')    
+        #print(form)    
         return render(request, 'modify_profile.html', {'form': form}) 
 
     form.save()
     return redirect('/')
+    #return render(request, 'modify_profile.html', {'form': form}) # Génère une erreur !
 
 def ajax_check_email_field(request):
     html_to_return = ''
