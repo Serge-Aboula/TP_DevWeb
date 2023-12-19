@@ -30,10 +30,9 @@ urlpatterns = [
     path('register/', views.register, name='register'),    
     path('addFriend/', views.add_friend, name='add_friend'),    
     path('showProfile/userToShow=<int:id>/', views.show_profile, name='show_profile'),    
-    #path('showProfile', show_profile, name='show_profile'),    
     path('modifyProfile/', views.modify_profile, name='modify_profile'),    
-    path('ajax/checkEmailField/', views.ajax_check_email_field, name='ajax_check_email_field'),    
-    #path('ajax/addFriend/email=<str:email>/', views.ajax_add_friend, name='ajax_add_friend'),    
+    path('ajax/checkEmailField/', views.ajax_check_email_field, name='ajax_check_email_field'),   
     path('ajax/addFriend/', views.ajax_add_friend, name='ajax_add_friend'),           
-    #path('ajax/addFriend/', views.ajax_add_friend, name='ajax_add_friend'),    
+    path('json/getMessages/', views.json_get_messages, name='json_get_messages'),    
+    path('json/getFriends/', views.json_get_friends, name='json_get_friends'),    
 ]
