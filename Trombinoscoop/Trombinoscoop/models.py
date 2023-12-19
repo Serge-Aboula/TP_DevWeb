@@ -31,6 +31,12 @@ class Message(models.Model):
         
         return self.content
     
+    class Meta:
+        ordering = ['-publication_date']
+        #db_table = 'db.sqlite3'
+        #managed = True
+        #verbose_name_plural = 'ModelNames'
+    
 
 class Faculty(models.Model):
     name = models.CharField(max_length = 30)
