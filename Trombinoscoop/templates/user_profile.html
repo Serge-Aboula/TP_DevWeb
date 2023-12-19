@@ -5,6 +5,7 @@
 {% block bodyId %}userProfilePage{% endblock %}
 
 {% block content %}
+<p id="registerNavButton"><a href="{% url 'login' %}" class="buttonLink">Retour</a></p>
 <h1>Création d'un compte</h1>
 <form>
     <p>
@@ -37,7 +38,7 @@
 </form>
 
 {% block javascript %}
-<script type="text/javascript">
+<script defer type="text/javascript">
     function displayRightForm(){
         if($('#profileType').val() === 'student'){
             $('#employeeForm').hide(); 
@@ -51,11 +52,11 @@
     $(document).ready(displayRightForm);
     $('#profileType').change(displayRightForm);
     
-    async function checkEmailField(){
+    function checkEmailField(){
         //alert('Courriel introduit. On va maintenant le valider.')
         let fieldValue = $('input#id_st-email').val();
         $.ajax({
-            url: '{% url 'ajax_check_email_field' %}',
+            url: "{% url 'ajax_check_email_field' %}",
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
@@ -69,7 +70,7 @@
         
         fieldValue = $('input#id_em-email').val();
         $.ajax({
-            url: '{% url 'ajax_check_email_field' %}',
+            url: "{% url 'ajax_check_email_field' %}",
             data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
             type: 'GET',
             success: function(data, textStatus, XMLHttpRequest){
