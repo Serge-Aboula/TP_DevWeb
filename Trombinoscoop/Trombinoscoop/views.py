@@ -40,6 +40,10 @@ def register(request):
                                                          'employeeForm': employeeForm})
         
         studentForm.save()
+        new_user = Person.objects.last()
+        new_user.friends.add(new_user)
+        #print(new_user)
+        new_user.save()
         return redirect('/login')
     
     elif request.GET['profileType'] == 'employee':
@@ -50,6 +54,10 @@ def register(request):
                                                          'studentForm': studentForm})
         
         employeeForm.save()
+        new_user = Person.objects.last()
+        new_user.friends.add(new_user)
+        #print(new_user)
+        new_user.save()
         return redirect('/login')
 
 def get_logged_user_from_request(request):
@@ -71,15 +79,9 @@ def welcome(request):
     logged_user = get_logged_user_from_request(request) 
     
     if not logged_user:        
-        return redirect('/login')    
+        return redirect('/login')
     
-    if 'newMessage' in request.GET and request.GET['newMessage'] != '': 
-        newMessage = Message(author=logged_user,
-                             content=request.GET['newMessage'],
-                             publication_date=datetime.today())
-        newMessage.save()
-    
-    return render(request, 'welcome.html', {"current_date_time": datetime.now,'logged_user': logged_user})
+    return render(request, 'welcome.html', {"current_date_time": datetime.now, 'logged_user': logged_user})
 
 def json_get_messages(request):
     logged_user = get_logged_user_from_request(request) 
@@ -252,6 +254,18 @@ def ajax_add_friend(request):
                     html_to_return = '<li><a href="{% url ' + "'show_profile' " + str(new_friend.id) +' %}">'
                     html_to_return += new_friend.first_name + ' ' + new_friend.last_name
                     html_to_return += '</a></li>'        
+    return HttpResponse(html_to_return)
+
+def ajax_publish_msg(request):
+    logged_user = get_logged_user_from_request(request)
+    html_to_return = ''
+    if logged_user:
+        if 'newMessage' in request.GET and request.GET['newMessage'] != '': 
+            newMessage = Message(author=logged_user,
+                                 content=request.GET['newMessage'],
+                                 publication_date=datetime.today())
+            newMessage.save()
+            html_to_return = 'ok'        
     return HttpResponse(html_to_return)
     
 # def login(request):
