@@ -29,6 +29,7 @@
 {% block content %}
 <section id="messageList">
     <form method="GET" action="" class="inlineForm">
+        {% csrf_token %}
         <label for="newMessageInput">Publier un message :</label>
         <input type="text" name="newMessage" id="newMessageInput"/>
         <input type="submit" value="Publier"/>
@@ -49,6 +50,7 @@
 <section id="friendList">
     <p class="title">Mes amis</p>
     <form method="GET" action="" class="inlineForm">
+        {% csrf_token %}
         <input type="email" name="newFriendEmail" id="newFriendInput" placeholder="Email"/>
         <input type="submit" value="Ajouter"/>
     </form>
@@ -143,6 +145,26 @@
     
     $(document).ready(function(){setInterval(getMessages, 500);});
     
+    function publishMsg(e){        
+        e.preventDefault();
+        let msg = $('#newMessageInput').val();
+        $.ajax({
+            url: "{% url 'ajax_publish_msg' %}", 
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newMessage': msg},
+            type: 'GET',
+            success: function(data, textStatus, XMLHttpRequest){
+                if(data != ''){
+                    //alert(data);
+                    alert("Message publié !")
+                    $("#newMessageInput").val("");
+                }
+            }
+        })
+        //return false;
+    }
+    
+    $(document).ready(function(){$('#messageList form').submit(publishMsg)});
+    
     function addFriend(event){
         event.preventDefault();
         let email = $('#newFriendInput').val();
@@ -159,6 +181,7 @@
                 else{
                     alert("Ami non ajouté !")
                 }
+                $("#newFriendInput").val("");
             }
         })
         //return false;
