@@ -33,6 +33,7 @@ urlpatterns = [
     path('modifyProfile/', views.modify_profile, name='modify_profile'),    
     path('ajax/checkEmailField/', views.ajax_check_email_field, name='ajax_check_email_field'),   
     path('ajax/addFriend/', views.ajax_add_friend, name='ajax_add_friend'),           
+    path('ajax/publishMsg/', views.ajax_publish_msg, name='ajax_publish_msg'),           
     path('json/getMessages/', views.json_get_messages, name='json_get_messages'),    
     path('json/getFriends/', views.json_get_friends, name='json_get_friends'),    
 ]
