@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script async src="{% static 'js/jquery-3.7.1.js' %}"></script>
+  {% load django_bootstrap5 %}    
+  {% bootstrap_css %}    
+  {% bootstrap_javascript %}    
+  {% bootstrap_messages %}
+  <title>Trombinoscoop</title>
+</head>
+<body id="indexPage">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="navbar example">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'index' %}">TROMBINOSCOOP</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'index' %}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">A propos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled">FAQs</a>
+          </li>
+        </ul>
+        <form class="me-md-1">
+          <input class="form-control" type="text" placeholder="Rechercher" aria-label="Search">
+        </form>
+        <div class="text-start">
+          <a href="{% url 'login' %}" class="btn btn-outline-light">Se connecter</a>
+          <a href="{% url 'register' %}" class="btn btn-warning">S'inscrire</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main id="main" class="container d-md-flex">
+    <figure class="figure mt-3">
+      <img src="{% static 'img/site.jpg' %}" class="figure-img img-fluid rounded" alt="Logo HTML w3">
+      {% comment %} <figcaption class="figure-caption text-center">Présentation de notre site</figcaption> {% endcomment %}
+    </figure>
+    <figure class="figure mt-4">
+      <img src="{% static 'img/scenario.jpg' %}" class="figure-img img-fluid rounded" alt="Logo HTML w3">
+      {% comment %} <figcaption class="figure-caption text-center">Scénarii de notre site</figcaption> {% endcomment %}
+    </figure>
+  </main>
+  <footer class="p-4 bg-dark text-white container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <h5>Section</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Accueil</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Contact</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">A propos</a></li>
+        </ul>
+      </div>
+
+      <div class="col-4 offset-6">
+        <form>
+          <h5>Souscrire à notre newsletter</h5>
+          <p>Soyez toujours au courant de nos nouvelles activités.</p>
+          <div class="d-flex flex-column w-100 gap-1 d-md-inline-flex flex-md-row">
+            <label for="newsletter1" class="visually-hidden">Email</label>
+            <input id="newsletter1" type="text" class="form-control" placeholder="Email">
+            <button class="btn btn-primary" type="button">Souscrire</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between py-4 my-4 border-top">
+      <p>&copy; 2024 Trombinoscoop, Inc. Tout droit reservé.</p>
+      <ul class="list-unstyled d-flex">
+        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
+        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
+        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
