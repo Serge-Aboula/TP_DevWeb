@@ -1,37 +1,52 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% load django_bootstrap5 %}
+
 {% block title %}Connexion{% endblock %}
+
 
 {% block bodyId %}loginPage{% endblock %}
 
-{% block content %}
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p>
-        <input type="submit" value="Se connecter"/>
-        <a href="{% url 'register' %}">Créer un compte</a> 
-    </p> 
+{% block headerContent %}
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <a href="{% url 'login' %}" class="text-decoration-none me-auto">
+      <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
+    </a>
+    <div class="text-end">
+      <a href="{% url 'index' %}" class="btn btn-warning ms-auto">Retour</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %} 
+<h1>Connexion</h1>           
+<form method="POST" action="" class="container mt-3">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Se connecter</button>
+  <a class="btn btn-outline-success mb-2 mb-sm-0" href="{% url 'register' %}">Créer un compte</a>  
 </form>
 {% endblock %}
 
 {% comment %} {% block Content %}
 <form method="POST" action="login/">
-    {% csrf_token %}    
-    {% if error %}
-    <p class="error">{{ error }}</p>  
-    {% endif %}        
-    <p>
-        <label for="email">Email :</label>
-        <input type="email" name="email" id="email" size="30"/> 
-    </p>
-    <p>
-        <label for="password">Mot de passe :</label>
-        <input type="password" name="password" id="password" size="30"/> 
-    </p>
-    <p>
-        <input type="submit" value="Se connecter"/>
-        <a href=" ">Créer un compte</a> 
-    </p> 
+  {% csrf_token %}    
+  {% if error %}
+  <p class="error">{{ error }}</p>  
+  {% endif %}        
+  <p>
+    <label for="email">Email :</label>
+    <input type="email" name="email" id="email" size="30"/> 
+  </p>
+  <p>
+    <label for="password">Mot de passe :</label>
+    <input type="password" name="password" id="password" size="30"/> 
+  </p>
+  <p>
+    <input type="submit" value="Se connecter"/>
+    <a href=" ">Créer un compte</a> 
+  </p> 
 </form>
 {% endblock %} {% endcomment %}

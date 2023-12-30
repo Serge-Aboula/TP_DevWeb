@@ -3,18 +3,24 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script async src="{% static 'js/jquery-3.7.1.js' %}"></script>
+    {% load django_bootstrap5 %}    
+    {% bootstrap_css %}    
+    {% bootstrap_javascript %}    
+    {% bootstrap_messages %}    
     <title>Trombinoscoop - {% block title %}Bienvenue{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-    <script async type="text/javascript" src="{% static 'js/jquery-3.7.1.js' %}"></script>
 </head>
-<body id="{% block bodyId %}genericPage{% endblock %}">
-    <header>
-        {% block headerContent %}{% endblock %}
-    </header>
-    <section id="content">
-        {% block content %}{% endblock %}
+<body id="{% block bodyId %}genericPage{% endblock %}" class="container-fluid">
+  <header class="container-fluid">
+    {% block headerContent %}{% endblock %}
+  </header>
+  <main class="p-2 container">
+    <section id="content" class="container">
+      {% block content %}{% endblock %}
     </section>
-    {% comment %} <footer><em>Copyright Trombinoscoop 2023</em><footer>     {% endcomment %}
+  </main>
 </body>
 </html>

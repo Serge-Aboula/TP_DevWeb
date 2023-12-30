@@ -1,16 +1,30 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% load django_bootstrap5 %}
+
 {% block title %}Modification de mon profil{% endblock %}
 
 {% block bodyId %}modifyProfilePage{% endblock %}
 
+{% block headerContent %}
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+  <a href="{% url 'login' %}" class="text-decoration-none me-auto">
+    <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
+  </a>
+  <div class="text-end">
+    <a href="{% url 'welcome' %}" class="btn btn-warning ms-auto">Retour</a>
+  </div>
+</div>
+{% endblock %}
+
 {% block content %}
-<p id="modifyNavButton"><a href="{% url '' %}" class="buttonLink">Retour</a></p>
-<h1>Modification de mon profil</h1>
+<h1 class="mt-1 mb-3">Modification de mon profil</h1>
 <form method="GET" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p class="buttonAction"><input type="submit" value="Modifier"/></p>
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Modifier</button>
 </form>
 {% endblock %}
 

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'livereload',
     'django.contrib.staticfiles',
     'Trombinoscoop',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

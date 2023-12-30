@@ -1,66 +1,82 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% load django_bootstrap5 %}
+
 {% block title %}Accueil{% endblock %}
 
 {% block bodyId %}welcomePage{% endblock %}
 
 {% block headerContent %}
-<p id="name">{{ logged_user.first_name }} {{ logged_user.last_name }}</p>
-<p id="function">    
-    {% if logged_user.person_type == 'student' %}
-        Etudiant en 
-        {% if logged_user.year == 1 %}
-            {{ logged_user.year }}ère année
-        {% else %}
-            {{ logged_user.year }}ème année
-        {% endif %}
-        {{ logged_user.cursus.title }}
-    {% else %}
-        {{ logged_user.job.title|capfirst }}
-        dans la Faculté {{ logged_user.faculty }}
-    {% endif %}
-</p>
-<p id="profileLinks">
-    <a href="{% url 'show_profile' logged_user.id %}" class="buttonLink">Voir le profil</a>
-    <a href="{% url 'modify_profile' %}" class="buttonLink">Modifier le profil</a>
-</p>
-<p><a href="{% url 'login' %}" id="backToLogin">Se déconnecter</a></p>
+<div class="row d-flex flex-wrap align-items-center justify-content-md-start">
+  <div class="col-12 col-md-auto mb-3 mb-md-0 me-md-3 text text-sm-start">
+    <p class="ms-5 mt-3 me-auto" id="name">
+      <a href="{% url 'login' %}" class="text-decoration-none me-auto">
+        <img src="{% static 'img/shortLogo.jpg' %}" class="img-fluid" alt="short-logo">
+      </a>{{ logged_user.first_name }} {{ logged_user.last_name }}<br>
+      {% if logged_user.person_type == 'student' %}
+          Etudiant en 
+          {% if logged_user.year == 1 %}
+              {{ logged_user.year }}ère année
+          {% else %}
+              {{ logged_user.year }}ème année
+          {% endif %}
+          {{ logged_user.cursus.title }}
+      {% else %}
+          {{ logged_user.job.title|capfirst }}
+          dans la Faculté {{ logged_user.faculty }}
+      {% endif %}
+    </p>
+  </div>
+  <div class="col-md text text-center text-md-end">
+    <a href="{% url 'show_profile' logged_user.id %}" class="btn btn-primary mt-md-1 mb-1 mb-md-0 me-1">Voir le profil</a>
+    <a href="{% url 'modify_profile' %}" class="btn btn-primary mt-md-1 mb-1 mb-md-0 me-1">Modifier le profil</a>
+    <a href="{% url 'login' %}" class="btn btn-primary mt-md-1 mb-1 mb-lg-0 me-1">Se déconnecter</a>
+  </div>
+</div>
 {% endblock %}
 {% block content %}
-<section id="messageList">
-    <form method="GET" action="" class="inlineForm">
-        {% csrf_token %}
-        <label for="newMessageInput">Publier un message :</label>
-        <input type="text" name="newMessage" id="newMessageInput"/>
-        <input type="submit" value="Publier"/>
+<div class="row card-deck">
+  <section class="col-sm mt-2 me-5 card bg-light" id="messageList">
+    <h1>Messages</h1>
+    <form method="GET" action="" class="form-inline row">
+      {% csrf_token %}
+      <div class="form-group d-inline-flex">
+        <input class="form-control me-1" type="text" name="newMessage" placeholder="Message" id="newMessageInput"/>
+        <button class="btn btn-primary" type="submit">Publier</button>
+      </div>
     </form>
-    <ul id="messagesList">        
-    {% comment %} {% for message in friendMessages %}
-    <li>
+    <ul id="messagesList" class="list-group mt-2">        
+      {% comment %} {% for message in friendMessages %}
+      <li>
         <p>
-            <a href="{% url 'show_profile' message.author.id %}">{{ message.author.first_name }}
-            {{ message.author.last_name }}
-            </a> dit:
+          <a href="{% url 'show_profile' message.author.id %}">{{ message.author.first_name }}
+          {{ message.author.last_name }}
+          </a> dit:
         </p>
         <p>{{ message.content }}</p>
-    </li>
-    {% endfor %} {% endcomment %}
+      </li>
+      {% endfor %} {% endcomment %}
     </ul>
-</section>
-<section id="friendList">
-    <p class="title">Mes amis</p>
-    <form method="GET" action="" class="inlineForm">
-        {% csrf_token %}
-        <input type="email" name="newFriendEmail" id="newFriendInput" placeholder="Email"/>
-        <input type="submit" value="Ajouter"/>
+  </section>
+  <section class="col-sm mt-2 card bg-light" id="friendList">
+    <h1>Mes amis</h1>
+    <form method="GET" action="" class="form-inline row">
+      {% csrf_token %}
+      <div class="form-group d-inline-flex">
+        <input class="form-control me-2" type="email" name="newFriendEmail" id="newFriendInput" placeholder="Email"/>
+        <button class="btn btn-primary" type="submit">Ajouter</button>
+      </div>
     </form>
     {% comment %} <p><a href="{% url 'add_friend' %}" class="buttonLink">Ajouter</a></p> {% endcomment %}
-    <ul id=friendsList>        
+    <ul id=friendsList class="list-group mt-2">        
     {% comment %} {% for friend in logged_user.friends.all %}
         <li><a href="{% url 'show_profile' friend.id %}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
     {% endfor %} {% endcomment %}
     </ul>
-</section>
+  </section>
+</div>
 {% block javascript %} {# comment here #}
 <script defer type="text/javascript">
     
@@ -80,7 +96,7 @@
                     let friendLastName = response.friendsList[key].last_name;
                     let friendFirstName = response.friendsList[key].first_name;                                     
 
-                    let temp = "<li><a href=\"showProfile/userToShow="+friendId+"\">"+friendLastName+" "+friendFirstName+"</a></li>";                    
+                    let temp = "<li><a class=\"list-group-item list-group-item-action\" href=\"showProfile/userToShow="+friendId+"\">"+friendLastName+" "+friendFirstName+"</a></li>";                    
                     $('#friendsList').append(temp)   
                     
                 } 
@@ -129,7 +145,7 @@
                     //$('p2').after(p1))
                     //$('#messagesList').append(li) {% endcomment %}
 
-                    let temp = "<li><p><a href=\"showProfile/userToShow="+msgAuthorId+"\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit:</p><p>"+msgAuthorContent+"</p></li>";
+                    let temp = "<li><p><a class=\"link\" href=\"showProfile/userToShow="+msgAuthorId+"\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit :</p><p>"+msgAuthorContent+"</p><hr></li>";
                     {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' "+msgAuthorId+" %}\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit:</p><p>"+msgAuthorContent+"</p></li>"; {% endcomment %}
                     {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' ${msgAuthorId} %}\">{{ ${msgAuthorFN} }} {{ ${msgAuthorLN} }}</a> dit:</p><p>{{ ${msgAuthorC} }}</p></li>"; {% endcomment %}
                     $('#messagesList').append(temp)   

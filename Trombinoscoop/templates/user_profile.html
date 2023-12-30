@@ -1,13 +1,27 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% load django_bootstrap5 %}
+
 {% block title %}Création d'un profil{% endblock %}
 
 {% block bodyId %}userProfilePage{% endblock %}
 
+{% block headerContent %}
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <a href="{% url 'login' %}" class="text-decoration-none me-auto">
+      <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
+    </a>
+    <div class="text-end">
+      <a href="{% url 'login' %}" class="btn btn-warning ms-auto">Retour</a>
+    </div>
+</div>
+{% endblock %}
+
 {% block content %}
-<p id="registerNavButton"><a href="{% url 'login' %}" class="buttonLink">Retour</a></p>
-<h1>Création d'un compte</h1>
-<form>
+<h1 class="mt-1 mb-4">Création d'un compte</h1>
+<form class="container mt-3">
     <p>
         <label for="profileType">Vous êtes :</label> 
         <select id="profileType">
@@ -20,20 +34,20 @@
         </select>
     </p>
 </form>
-<form method="GET" action="" id="studentForm">
+<form method="GET" action="" id="studentForm" class="container mt-3">
     {% csrf_token %}
-    {{ studentForm.as_p }}
+    {% bootstrap_form studentForm %}
     <p>
         <input type="hidden" name="profileType" value="student"/>
-        <input type="submit" value="Créer un compte"/>
+        <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Créer un compte</button>
     </p> 
 </form>
-<form method="GET" action="" id="employeeForm">
+<form method="GET" action="" id="employeeForm" class="container mt-3">
     {% csrf_token %}
-    {{ employeeForm.as_p }}
+    {% bootstrap_form employeeForm %}
     <p>
         <input type="hidden" name="profileType" value="employee"/>
-        <input type="submit" value="Créer un compte"/>
+        <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Créer un compte</button>
     </p> 
 </form>
 

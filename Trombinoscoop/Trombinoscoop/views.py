@@ -6,6 +6,9 @@ from django.http import HttpResponse, JsonResponse
 from Trombinoscoop.models import Person, Student, Employee, Message
 from Trombinoscoop.forms import LoginForm, StudentProfileForm, EmployeeProfileForm, addFriendForm
 
+def index(request):
+    return render(request, 'index.html')
+
 def login(request):
     if not request.POST:
         form = LoginForm()
@@ -20,7 +23,7 @@ def login(request):
     logged_user = Person.objects.get(email=user_email)
     request.session['logged_user_id'] = logged_user.id
     
-    return redirect('/')
+    return redirect('/welcome')
 
 def register(request):
     if not request.GET or  not 'profileType' in request.GET:
@@ -160,7 +163,7 @@ def add_friend(request):
     logged_user.friends.add(newFriend)
     logged_user.save()
     
-    return redirect('/')
+    return redirect('/welcome')
 
 def show_profile(request, id):
     # On récupère l'id de session 
@@ -217,7 +220,7 @@ def modify_profile(request):
         return render(request, 'modify_profile.html', {'form': form}) 
 
     form.save()
-    return redirect('/')
+    return redirect('/welcome')
     #return render(request, 'modify_profile.html', {'form': form}) # Génère une erreur !
 
 def ajax_check_email_field(request):
@@ -288,4 +291,4 @@ def ajax_publish_msg(request):
 #        return render(request, 'login.html', {'error': error}) 
     
 #     # Tout est bon on va à la page d'accueil
-#     return redirect('/')
+#     return redirect('/welcome')

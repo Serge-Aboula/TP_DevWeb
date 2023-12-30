@@ -1,41 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Affichage d'un profil{% endblock %}
+{% load static %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}Mon profil{% endblock %}
 
 {% block bodyId %}showProfilePage{% endblock %}
 
+{% block headerContent %}
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <a href="{% url 'login' %}" class="text-decoration-none me-auto">
+      <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
+    </a>
+    <div class="text-end">
+      <a href="{% url 'welcome' %}" class="btn btn-warning ms-auto">Retour</a>
+    </div>
+</div>
+{% endblock %}
+
 {% block content %}
-<h1>Affichage d'un profil</h1>
-<dl class="fieldList">
-    <dt>Nom :</dt>
-        <dd>{{ user_to_show.last_name }}</dd>
-    <dt>Prénom :</dt>
-        <dd>{{ user_to_show.first_name }}</dd>
-    <dt>Date de naissance :</dt>
-        <dd>{{ user_to_show.birth_date }}</dd>
-    <dt>Matricule :</dt>
-        <dd>{{ user_to_show.registration_number }}</dd>
-    <dt>Email :</dt>
-        <dd>{{ user_to_show.email }}</dd>
-    <dt>Tel. fixe :</dt>
-        <dd>{{ user_to_show.home_phone_number }}</dd>
-    <dt>Tel. mobile :</dt>
-        <dd>{{ user_to_show.cellphone_number }}</dd>
-    <dt>Faculté :</dt>
-        <dd>{{ user_to_show.faculty.name }}</dd>
+<h1>Mon profil</h1>
+<dl class="list-unstyled mt-3 fieldList">
+  <dt class="text-start">Nom :</dt>
+    <dd>{{ user_to_show.last_name }}</dd>
+  <dt class="text-start">Prénom :</dt>
+    <dd>{{ user_to_show.first_name }}</dd>
+  <dt class="text-start">Date de naissance :</dt>
+    <dd>{{ user_to_show.birth_date }}</dd>
+  <dt class="text-start">Matricule :</dt>
+    <dd>{{ user_to_show.registration_number }}</dd>
+  <dt class="text-start">Email :</dt>
+    <dd>{{ user_to_show.email }}</dd>
+  <dt class="text-start">Tel. fixe :</dt>
+    <dd>{{ user_to_show.home_phone_number }}</dd>
+  <dt class="text-start">Tel. mobile :</dt>
+    <dd>{{ user_to_show.cellphone_number }}</dd>
+  <dt class="text-start">Faculté :</dt>
+    <dd>{{ user_to_show.faculty.name }}</dd>
 {% if user_to_show.person_type == "student" %}
-    <dt>Cursus :</dt>
-        <dd>{{ user_to_show.cursus.title }}</dd>
-    <dt>Année :</dt>
-        <dd>{{ user_to_show.year }}</dd>
+  <dt class="text-start">Cursus :</dt>
+    <dd>{{ user_to_show.cursus.title }}</dd>
+  <dt class="text-start">Année :</dt>
+    <dd>{{ user_to_show.year }}</dd>
 {% elif user_to_show.person_type == "employee" %}
-    <dt>Bureau :</dt>
-        <dd>{{ user_to_show.office }}</dd> 
-    <dt>Campus :</dt>
-        <dd>{{ user_to_show.campus.name }}</dd>
-    <dt>Fonction :</dt>
-        <dd>{{ user_to_show.job.title }}</dd>   
+  <dt class="text-start">Bureau :</dt>
+    <dd>{{ user_to_show.office }}</dd> 
+  <dt class="text-start">Campus :</dt>
+    <dd>{{ user_to_show.campus.name }}</dd>
+  <dt class="text-start" class="text-end">Fonction :</dt>
+    <dd>{{ user_to_show.job.title }}</dd>   
 {% endif %}    
 </dl>
-<p id="showProfileNavigationButtons"><a href="{% url '' %}" class="buttonLink">Retour</a></p>
 {% endblock %}

@@ -1,21 +1,47 @@
-*{
-    margin: 0;
-    padding: 0; 
-}
-
-body{    
-    font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
-    font-size: 13px;
-    color: #000333;
-}
 header{
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 125px;
-    width: 100%;
-    background: #3b5988 url('../img/logo.jpg') no-repeat 50px 25px;
-    border-bottom: 1px solid #133783;
+  height: 18%;
+  width: 100%;
+  background-color: #3b5988;
+  border-bottom: 1px solid #133783;
+}
+section h1{
+  text-align: center;
+  font-size: 1.7rem;
+  padding-bottom: 0.15rem;
+  color: #3b5998;
+  border-bottom: 0.12rem solid #3b5988;
+}
+body#welcomePage header{
+  height: 25%;
+  width: 100%;
+  font-size: 1.3rem;
+  background-color: #3b5998;
+  color: #fff;
+}
+body#welcomePage section h1{
+  font-size: 1.5rem;
+}
+body#welcomePage a{
+  text-decoration: none;
+}
+body#welcomePage ul{ 
+    list-style: none;
+}
+section#content dl.fieldList{
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0 10px 0 0; 
+}
+section#content dl.fieldList dd{
+  display: block;
+  width: 50%;
+  padding: 0;
+  margin: 0 0 10px 0;   
+}
+ul.errorlist{
+  list-style-type: none;
+  color: #d23d24;
 }
 /* footer{
     display: block;
@@ -24,7 +50,7 @@ header{
     width: 100%;
     text-align: center;
     margin: 0 0 10px;
-} */
+}
 body section#content{
     position: absolute;
     top: 140px;
@@ -71,9 +97,9 @@ body#welcomePage header p a#backToLogin{
     text-decoration: none;
     margin: 5px
 }
-/* body#welcomePage section#content{
+body#welcomePage section#content{
     text-align: center;
-} */
+}
 form label{
     display: block;
     width: 150px;
@@ -103,15 +129,11 @@ a{
 form p{
     margin-bottom: 10px;
 }
-/* form p.error{
-    margin-left: 160px;
-    color: #d23d24;
-} */
 ul.errorlist{
-    margin-left: 160px;
-    padding: 0;
-    list-style-type: none;
-    color: #d23d24;
+  margin-left: 160px;
+  padding: 0;
+  list-style-type: none;
+  color: #d23d24;
 }
 section#content h1{
     text-align: center;
@@ -128,7 +150,6 @@ body#welcomePage section#content{
 body#welcomePage section#messageList{
     position: absolute;
     width: 600px;
-    /* background-color: rgb(180, 60, 60); */
 }
 form.inlineForm label{
     display: inline;
@@ -209,4 +230,4 @@ section#content p#modifyNavButton{
 }
 #friendList form.inlineForm input[type="submit"]{
     display: inline-block;
-}
+} */
