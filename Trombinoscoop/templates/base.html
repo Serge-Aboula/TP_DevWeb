@@ -13,12 +13,12 @@
     {% bootstrap_messages %}    
     <title>Trombinoscoop - {% block title %}Bienvenue{% endblock %}</title>
 </head>
-<body id="{% block bodyId %}genericPage{% endblock %}" class="container-fluid">
-  <header class="container-fluid">
+<body id="{% block bodyId %}genericPage{% endblock %}">
+  <header>
     {% block headerContent %}{% endblock %}
   </header>
-  <main class="p-2 container">
-    <section id="content" class="container">
+  <main class="container">
+    <section id="content">
       {% block content %}{% endblock %}
     </section>
   </main>

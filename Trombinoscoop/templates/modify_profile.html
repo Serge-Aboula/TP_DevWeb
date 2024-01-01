@@ -13,19 +13,24 @@
   <a href="{% url 'login' %}" class="text-decoration-none me-auto">
     <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
   </a>
-  <div class="text-end">
+  <div class="text-end me-5">
     <a href="{% url 'welcome' %}" class="btn btn-warning ms-auto">Retour</a>
   </div>
 </div>
 {% endblock %}
 
 {% block content %}
-<h1 class="mt-1 mb-3">Modification de mon profil</h1>
-<form method="GET" action="">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Modifier</button>
-</form>
+<div class="card bg-light mb-3 mt-4 offset-3 col-6 offset-lg-4 col-lg-4">
+  <div class="card-body">
+    <h4 class="card-title text-center">Modification de mon profil</h4>
+    <form method="GET" action="">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Modifier</button>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
 
 {% comment %} {% block javascript %}

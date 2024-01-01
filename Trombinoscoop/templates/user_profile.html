@@ -13,43 +13,49 @@
     <a href="{% url 'login' %}" class="text-decoration-none me-auto">
       <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
     </a>
-    <div class="text-end">
+    <div class="text-end me-5">
       <a href="{% url 'login' %}" class="btn btn-warning ms-auto">Retour</a>
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
-<h1 class="mt-1 mb-4">Création d'un compte</h1>
-<form class="container mt-3">
-    <p>
-        <label for="profileType">Vous êtes :</label> 
-        <select id="profileType">
-            <option value="student" {% if studentForm.is_bound %} select="selected" {% endif %}>
-                Etudiant 
-            </option> 
-            <option value="employee" {% if employeeForm.is_bound %} select="selected" {% endif %}>
-                Employé 
-            </option>
-        </select>
-    </p>
-</form>
-<form method="GET" action="" id="studentForm" class="container mt-3">
-    {% csrf_token %}
-    {% bootstrap_form studentForm %}
-    <p>
-        <input type="hidden" name="profileType" value="student"/>
-        <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Créer un compte</button>
-    </p> 
-</form>
-<form method="GET" action="" id="employeeForm" class="container mt-3">
-    {% csrf_token %}
-    {% bootstrap_form employeeForm %}
-    <p>
-        <input type="hidden" name="profileType" value="employee"/>
-        <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Créer un compte</button>
-    </p> 
-</form>
+<div class="card bg-light mb-3 mt-4 offset-3 col-6 offset-lg-4 col-lg-4">
+    <div class="card-body">
+      <h4 class="card-title text-center">Création d'un compte</h4>
+      <form class="container mt-3">
+        {% csrf_token %}
+        <p>
+            <label for="profileType">Vous êtes :</label> 
+            <select id="profileType">
+                <option value="student" {% if studentForm.is_bound %} select="selected" {% endif %}>
+                    Etudiant 
+                </option> 
+                <option value="employee" {% if employeeForm.is_bound %} select="selected" {% endif %}>
+                    Employé 
+                </option>
+            </select>
+        </p>
+    </form>
+    <form method="GET" action="" id="studentForm" class="container mt-3">
+        {% csrf_token %}
+        {% bootstrap_form studentForm %}
+        <p>
+            <input type="hidden" name="profileType" value="student"/>
+            <button class="btn btn-primary me-1 mb-1 mb-sm-0" type="submit">Créer un compte</button>
+        </p> 
+    </form>
+    <form method="GET" action="" id="employeeForm" class="container mt-3">
+        {% csrf_token %}
+        {% bootstrap_form employeeForm %}
+        <p>
+            <input type="hidden" name="profileType" value="employee"/>
+            <button class="btn btn-primary me-1 mb-1 mb-sm-0" type="submit">Créer un compte</button>
+        </p> 
+    </form>
+    </div>
+  </div>
+
 
 {% block javascript %}
 <script defer type="text/javascript">

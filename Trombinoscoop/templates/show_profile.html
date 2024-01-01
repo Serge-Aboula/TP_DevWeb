@@ -20,36 +20,41 @@
 {% endblock %}
 
 {% block content %}
-<h1>Mon profil</h1>
-<dl class="list-unstyled mt-3 fieldList">
-  <dt class="text-start">Nom :</dt>
-    <dd>{{ user_to_show.last_name }}</dd>
-  <dt class="text-start">Prénom :</dt>
-    <dd>{{ user_to_show.first_name }}</dd>
-  <dt class="text-start">Date de naissance :</dt>
-    <dd>{{ user_to_show.birth_date }}</dd>
-  <dt class="text-start">Matricule :</dt>
-    <dd>{{ user_to_show.registration_number }}</dd>
-  <dt class="text-start">Email :</dt>
-    <dd>{{ user_to_show.email }}</dd>
-  <dt class="text-start">Tel. fixe :</dt>
-    <dd>{{ user_to_show.home_phone_number }}</dd>
-  <dt class="text-start">Tel. mobile :</dt>
-    <dd>{{ user_to_show.cellphone_number }}</dd>
-  <dt class="text-start">Faculté :</dt>
-    <dd>{{ user_to_show.faculty.name }}</dd>
-{% if user_to_show.person_type == "student" %}
-  <dt class="text-start">Cursus :</dt>
-    <dd>{{ user_to_show.cursus.title }}</dd>
-  <dt class="text-start">Année :</dt>
-    <dd>{{ user_to_show.year }}</dd>
-{% elif user_to_show.person_type == "employee" %}
-  <dt class="text-start">Bureau :</dt>
-    <dd>{{ user_to_show.office }}</dd> 
-  <dt class="text-start">Campus :</dt>
-    <dd>{{ user_to_show.campus.name }}</dd>
-  <dt class="text-start" class="text-end">Fonction :</dt>
-    <dd>{{ user_to_show.job.title }}</dd>   
-{% endif %}    
-</dl>
+<div class="card bg-light mb-3 mt-4 offset-3 col-6 offset-lg-4 col-lg-4">
+  <div class="card-body">
+    <h4 class="card-title text-center">Mon profil</h4>
+    <dl class="list-unstyled mt-3 fieldList">
+      <dt class="text-start">Nom :</dt>
+        <dd>{{ user_to_show.last_name }}</dd>
+      <dt class="text-start">Prénom :</dt>
+        <dd>{{ user_to_show.first_name }}</dd>
+      <dt class="text-start">Date de naissance :</dt>
+        <dd>{{ user_to_show.birth_date }}</dd>
+      <dt class="text-start">Matricule :</dt>
+        <dd>{{ user_to_show.registration_number }}</dd>
+      <dt class="text-start">Email :</dt>
+        <dd>{{ user_to_show.email }}</dd>
+      <dt class="text-start">Tel. fixe :</dt>
+        <dd>{{ user_to_show.home_phone_number }}</dd>
+      <dt class="text-start">Tel. mobile :</dt>
+        <dd>{{ user_to_show.cellphone_number }}</dd>
+      <dt class="text-start">Faculté :</dt>
+        <dd>{{ user_to_show.faculty.name }}</dd>
+    {% if user_to_show.person_type == "student" %}
+      <dt class="text-start">Cursus :</dt>
+        <dd>{{ user_to_show.cursus.title }}</dd>
+      <dt class="text-start">Année :</dt>
+        <dd>{{ user_to_show.year }}</dd>
+    {% elif user_to_show.person_type == "employee" %}
+      <dt class="text-start">Bureau :</dt>
+        <dd>{{ user_to_show.office }}</dd> 
+      <dt class="text-start">Campus :</dt>
+        <dd>{{ user_to_show.campus.name }}</dd>
+      <dt class="text-start" class="text-end">Fonction :</dt>
+        <dd>{{ user_to_show.job.title }}</dd>   
+    {% endif %}    
+    </dl>
+  </div>
+</div>
+
 {% endblock %}

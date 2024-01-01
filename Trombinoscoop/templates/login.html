@@ -14,20 +14,24 @@
     <a href="{% url 'login' %}" class="text-decoration-none me-auto">
       <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
     </a>
-    <div class="text-end">
+    <div class="text-end me-5">
       <a href="{% url 'index' %}" class="btn btn-warning ms-auto">Retour</a>
     </div>
 </div>
 {% endblock %}
 
-{% block content %} 
-<h1>Connexion</h1>           
-<form method="POST" action="" class="container mt-3">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  <button class="btn btn-primary me-1 mb-2 mb-sm-0" type="submit">Se connecter</button>
-  <a class="btn btn-outline-success mb-2 mb-sm-0" href="{% url 'register' %}">Créer un compte</a>  
-</form>
+{% block content %}       
+<div class="card bg-light mt-4 offset-3 col-6 offset-lg-4 col-lg-4">
+  <div class="card-body">
+    <h4 class="card-title text-center">Connexion</h4>
+    <form method="post">
+      {% csrf_token %}    
+      {% bootstrap_form form %}
+      <button class="btn btn-primary me-1 mb-1 mb-lg-0 me-auto" type="submit">Se connecter</button>
+      <a class="btn btn-outline-success mb-1 mb-lg-0" href="{% url 'register' %}">Créer un compte</a>  
+    </form>
+  </div>
+</div> 
 {% endblock %}
 
 {% comment %} {% block Content %}
