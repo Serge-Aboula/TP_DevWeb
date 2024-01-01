@@ -9,18 +9,18 @@
 {% block bodyId %}showProfilePage{% endblock %}
 
 {% block headerContent %}
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+<div class="d-flex flex-wrap gap-1 gap-md-0 align-items-center justify-content-center justify-content-lg-start">
     <a href="{% url 'login' %}" class="text-decoration-none me-auto">
       <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
     </a>
-    <div class="text-end">
-      <a href="{% url 'welcome' %}" class="btn btn-warning ms-auto">Retour</a>
+    <div class="text-end mb-1 mb-md-0 me-5">
+      <a href="{% url 'welcome' %}" class="btn btn-warning p-1 ms-auto">Retour</a>
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
-<div class="card bg-light mb-3 mt-4 offset-3 col-6 offset-lg-4 col-lg-4">
+<div class="card bg-light mb-0 mt-0 mb-sm-3 mt-sm-3 col-12 offset-lg-3 col-lg-6">
   <div class="card-body">
     <h4 class="card-title text-center">Mon profil</h4>
     <dl class="list-unstyled mt-3 fieldList">

@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8x4q0-i_$va-$@9^2emb3bj!tr+4cz_m%gizm!@t4aw$$q62pj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1' 'sergeongolo.pythonanywhere.com']
 
 
 # Application definition
@@ -133,6 +133,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TEMPLATES[0]['DIRS'] = [os.path.join(BASE_DIR, 'templates')]
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')]
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

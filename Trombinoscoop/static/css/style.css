@@ -5,10 +5,13 @@ header{
 }
 section h1{
   text-align: center;
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   padding-bottom: 0.15rem;
   color: #3b5998;
   border-bottom: 0.12rem solid #3b5988;
+}
+body#welcomePage{
+    font-size: .9rem;
 }
 body#welcomePage header{
   height: 25%;
@@ -26,6 +29,9 @@ body#welcomePage a{
 body#welcomePage ul{ 
     list-style: none;
 }
+body#welcomePage section[class~="card"]{
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+}
 section#content dl.fieldList{
   display: block;
   width: 100%;
@@ -41,6 +47,26 @@ section#content dl.fieldList dd{
 ul.errorlist{
   list-style-type: none;
   color: #d23d24;
+}
+@media screen and (max-width: 576px) {
+    *{
+        font-size: .9rem;
+    }
+    main{
+        padding: 2% 15%;
+    }
+    button[class~="btn"],a[class~="btn"], ::placeholder{
+        padding: .15rem;
+        font-size: .9rem;
+    }
+    button[class~="btn"],a[class~="btn"]{
+        border-radius: .15rem;
+    }
+    div[class~="card"]{
+        width: 100%;
+        position: relative;
+        margin: 0 auto;
+    }
 }
 /* footer{
     display: block;
