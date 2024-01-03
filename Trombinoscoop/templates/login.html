@@ -21,10 +21,10 @@
 {% endblock %}
 
 {% block content %}       
-<div class="card bg-light mb-0 mt-0 mb-sm-3 mt-sm-3 offset-3 col-6 offset-lg-4 col-lg-4">
+<div class="card bg-light mb-0 mt-0 mb-sm-5 mt-sm-5 offset-3 col-6 offset-lg-4 col-lg-4">
   <div class="card-body">
     <h4 class="card-title text-center">Connexion</h4>
-    <form method="post">
+    <form method="post" action="" name="form-login">
       {% csrf_token %}    
       {% bootstrap_form form %}
       <button class="btn btn-primary p-1 me-1 mb-1 mb-lg-0 me-auto" type="submit">Se connecter</button>

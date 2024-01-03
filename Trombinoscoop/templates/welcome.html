@@ -37,10 +37,10 @@
 </div>
 {% endblock %}
 {% block content %}
-<div class="row card-deck mt-3 mb-3">
-  <section class="col-sm mt-2 me-5 card bg-light" id="messageList">
+<div class="row card-deck gap-2 gap-sm-5 mt-3 mb-3">
+  <section class="col-sm mt-2 me-sm-5 card bg-light" id="messageList">
     <h1>Messages</h1>
-    <form method="GET" action="" class="form-inline row">
+    <form method="GET" action="" class="form-inline row" name="form-publish-msg">
       {% csrf_token %}
       <div class="form-group d-inline-flex">
         <input class="form-control me-1" type="text" name="newMessage" placeholder="Message" id="newMessageInput"/>
@@ -62,7 +62,7 @@
   </section>
   <section class="col-sm mt-2 card bg-light" id="friendList">
     <h1>Mes amis</h1>
-    <form method="GET" action="" class="form-inline row">
+    <form method="GET" action="" class="form-inline row" name="form-add-friend">
       {% csrf_token %}
       <div class="form-group d-inline-flex">
         <input class="form-control me-2" type="email" name="newFriendEmail" id="newFriendInput" placeholder="Email"/>
@@ -71,139 +71,138 @@
     </form>
     {% comment %} <p><a href="{% url 'add_friend' %}" class="buttonLink">Ajouter</a></p> {% endcomment %}
     <ul id=friendsList class="list-group mt-2">        
-    {% comment %} {% for friend in logged_user.friends.all %}
+      {% comment %} {% for friend in logged_user.friends.all %}
         <li><a href="{% url 'show_profile' friend.id %}">{{ friend.first_name }} {{ friend.last_name }}</a></li>
-    {% endfor %} {% endcomment %}
+      {% endfor %} {% endcomment %}
     </ul>
   </section>
 </div>
 {% block javascript %} {# comment here #}
 <script defer type="text/javascript">
     
-    function getFriends(){
-        $.ajax({
-            url: "{% url 'json_get_friends' %}",
-            type: 'GET',
-            //dataType: 'json'
-            success: function(response){
-                //console.log(response);
-                $('#friendsList').empty();
-                for (key in response.friendsList){
-                    //console.log(response.friendsList);
-                    //console.log(response.friendsList[key]);
-                    //console.log(response.friendsList[key].author[0].last_name);
-                    let friendId = response.friendsList[key].id;                                      
-                    let friendLastName = response.friendsList[key].last_name;
-                    let friendFirstName = response.friendsList[key].first_name;                                     
+  function getFriends(){
+    $.ajax({
+      url: "{% url 'json_get_friends' %}",
+      type: 'GET',
+      //dataType: 'json'
+      success: function(response){
+        //console.log(response);
+        $('#friendsList').empty();
+        for (key in response.friendsList){
+          //console.log(response.friendsList);
+          //console.log(response.friendsList[key]);
+          //console.log(response.friendsList[key].author[0].last_name);
+          let friendId = response.friendsList[key].id;                                      
+          let friendLastName = response.friendsList[key].last_name;
+          let friendFirstName = response.friendsList[key].first_name;                                     
 
-                    let temp = "<li><a class=\"list-group-item list-group-item-action\" href=\"showProfile/userToShow="+friendId+"\">"+friendLastName+" "+friendFirstName+"</a></li>";                    
-                    $('#friendsList').append(temp)   
-                    
-                } 
-                
-            },
-            error: function(response){
-                console.log("Erreur !");                        
-            }
-        })
-    }
+          let temp = "<li><a class=\"list-group-item list-group-item-action\" href=\"showProfile/userToShow="+friendId+"\">"+friendLastName+" "+friendFirstName+"</a></li>";                    
+          $('#friendsList').append(temp)            
+        }          
+      },
+      error: function(response){
+        console.log("Erreur !");                        
+      }
+    })
+  }
     
-    $(document).ready(function(){setInterval(getFriends, 500);});
+  $(document).ready(function(){setInterval(getFriends, 500);});
         
-    function getMessages(){
-        $.ajax({
-            url: "{% url 'json_get_messages' %}",
-            type: 'GET',
-            //dataType: 'json'
-            success: function(response){
-                //console.log(response);
-                $('#messagesList').empty();
-                for (key in response.friendMessages){
-                    //console.log(response.friendMessages);
-                    //console.log(response.friendMessages[key]);
-                    //console.log(response.friendMessages[key].author[0].last_name);
-                    let msgAuthorId = response.friendMessages[key].author[0].id;
-                    //msgAuthorId = msgAuthorId.toString() //msgAuthorId = parseInt(msgAuthorId, 10)
-                    let msgAuthorContent = response.friendMessages[key].content
-                    let msgAuthorLastName = response.friendMessages[key].author[0].last_name;
-                    let msgAuthorFirstName = response.friendMessages[key].author[0].first_name;                                     
+  function getMessages(){
+    $.ajax({
+      url: "{% url 'json_get_messages' %}",
+      type: 'GET',
+      //dataType: 'json'
+      success: function(response){
+        //console.log(response);
+        $('#messagesList').empty();
+        for (key in response.friendMessages){
+          //console.log(response.friendMessages);
+          //console.log(response.friendMessages[key]);
+          //console.log(response.friendMessages[key].author[0].last_name);
+          let msgAuthorId = response.friendMessages[key].author[0].id;
+          //msgAuthorId = msgAuthorId.toString() //msgAuthorId = parseInt(msgAuthorId, 10)
+          let msgAuthorContent = response.friendMessages[key].content
+          let msgAuthorLastName = response.friendMessages[key].author[0].last_name;
+          let msgAuthorFirstName = response.friendMessages[key].author[0].first_name;                                     
 
-                    //console.log(msgAuthorId);
-                    //console.log(typeof msgAuthorId);
-                    
-                    {% comment %} //let li = document.createElement('li')
-                    //let p1 = document.createElement('p')
-                    //let p2 = document.createElement('p')
-                    //let a = document.createElement('a')
-                    
-                    //$('a').text('{{ msgAuthorFN }} {{ msgAuthorLN }}')
-                    //$('a').attr('href', "{% url 'show_profile' msgAuthorId %}")
-                    //$('p2').append(a)
-                    //$('a').after('dit:')
-                    //$('p1').text('{{ msgAuthorC }}')
-                    //$('li').append(p2)
-                    //$('p2').after(p1))
-                    //$('#messagesList').append(li) {% endcomment %}
+          //console.log(msgAuthorId);
+          //console.log(typeof msgAuthorId);
+          
+          {% comment %} //let li = document.createElement('li')
+          //let p1 = document.createElement('p')
+          //let p2 = document.createElement('p')
+          //let a = document.createElement('a')
+          
+          //$('a').text('{{ msgAuthorFN }} {{ msgAuthorLN }}')
+          //$('a').attr('href', "{% url 'show_profile' msgAuthorId %}")
+          //$('p2').append(a)
+          //$('a').after('dit:')
+          //$('p1').text('{{ msgAuthorC }}')
+          //$('li').append(p2)
+          //$('p2').after(p1))
+          //$('#messagesList').append(li) {% endcomment %}
 
-                    let temp = "<li><p><a class=\"link\" href=\"showProfile/userToShow="+msgAuthorId+"\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit :</p><p>"+msgAuthorContent+"</p><hr></li>";
-                    {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' "+msgAuthorId+" %}\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit:</p><p>"+msgAuthorContent+"</p></li>"; {% endcomment %}
-                    {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' ${msgAuthorId} %}\">{{ ${msgAuthorFN} }} {{ ${msgAuthorLN} }}</a> dit:</p><p>{{ ${msgAuthorC} }}</p></li>"; {% endcomment %}
-                    $('#messagesList').append(temp)   
-                    
-                } 
-                
-            },
-            error: function(response){
-                console.log("Erreur !");                        
-            }
-        })
-    }
+          let temp = "<li><p><a class=\"link\" href=\"showProfile/userToShow="+msgAuthorId+"\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit :</p><p>"+msgAuthorContent+"</p><hr></li>";
+          {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' "+msgAuthorId+" %}\">"+msgAuthorFirstName+" "+msgAuthorLastName+"</a> dit:</p><p>"+msgAuthorContent+"</p></li>"; {% endcomment %}
+          {% comment %} //let temp = "<li><p><a href=\"{% url 'show_profile' ${msgAuthorId} %}\">{{ ${msgAuthorFN} }} {{ ${msgAuthorLN} }}</a> dit:</p><p>{{ ${msgAuthorC} }}</p></li>"; {% endcomment %}
+          $('#messagesList').append(temp)          
+        }              
+      },
+      error: function(response){
+        console.log("Erreur !");                        
+      }
+    })
+  }
     
-    $(document).ready(function(){setInterval(getMessages, 500);});
+  $(document).ready(function(){setInterval(getMessages, 500);});
+  
+  function publishMsg(e){        
+    e.preventDefault();
+    let msg = $('#newMessageInput').val();
+    $.ajax({
+      url: "{% url 'ajax_publish_msg' %}", 
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newMessage': msg},
+      type: 'GET',
+      success: function(data, textStatus, XMLHttpRequest){
+        if(data != ''){
+          //alert(data);
+          alert("Message publié !")
+          $("#newMessageInput").val("");
+        }
+        else{
+          alert("Message non publié !")
+        }
+      }
+    })
+    //return false;
+  }
     
-    function publishMsg(e){        
-        e.preventDefault();
-        let msg = $('#newMessageInput').val();
-        $.ajax({
-            url: "{% url 'ajax_publish_msg' %}", 
-            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newMessage': msg},
-            type: 'GET',
-            success: function(data, textStatus, XMLHttpRequest){
-                if(data != ''){
-                    //alert(data);
-                    alert("Message publié !")
-                    $("#newMessageInput").val("");
-                }
-            }
-        })
-        //return false;
-    }
+  $(document).ready(function(){$('#messageList form').submit(publishMsg)});
+  
+  function addFriend(event){
+    event.preventDefault();
+    let email = $('#newFriendInput').val();
+    $.ajax({
+      url: "{% url 'ajax_add_friend' %}", 
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newFriendEmail': email},
+      type: 'GET',
+      success: function(data, textStatus, XMLHttpRequest){
+        if(data != ''){
+          //alert(data);
+          $('#friendList ul').prepend(data);
+          alert("Ami ajouté !")
+        }
+        else{
+          alert("Ami non ajouté !")
+        }
+        $("#newFriendInput").val("");
+      }
+    })
+    //return false;
+  }
     
-    $(document).ready(function(){$('#messageList form').submit(publishMsg)});
-    
-    function addFriend(event){
-        event.preventDefault();
-        let email = $('#newFriendInput').val();
-        $.ajax({
-            url: "{% url 'ajax_add_friend' %}", 
-            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'newFriendEmail': email},
-            type: 'GET',
-            success: function(data, textStatus, XMLHttpRequest){
-                if(data != ''){
-                    //alert(data);
-                    $('#friendList ul').prepend(data);
-                    alert("Ami ajouté !")
-                }
-                else{
-                    alert("Ami non ajouté !")
-                }
-                $("#newFriendInput").val("");
-            }
-        })
-        //return false;
-    }
-    
-    $(document).ready(function(){$('#friendList form').submit(addFriend)});
+  $(document).ready(function(){$('#friendList form').submit(addFriend)});
 </script>
 {% endblock javascript %}
 {% endblock %}
@@ -211,7 +210,7 @@
 {% comment %} {% block Content %}
 <h1>Page d'accueil</h1>
 <p>
-    {{ logged_user.first_name }} {{ logged_user.last_name }}, bienvenue sur Trombinoscoop !
+  {{ logged_user.first_name }} {{ logged_user.last_name }}, bienvenue sur Trombinoscoop !
 </p>
 <p>Nous sommes le {{ current_date_time }}</p>
 {% endblock %} {% endcomment %}

@@ -10,99 +10,107 @@
 
 {% block headerContent %}
 <div class="d-flex flex-wrap gap-1 gap-md-0 align-items-center justify-content-center justify-content-lg-start">
-    <a href="{% url 'login' %}" class="text-decoration-none me-auto">
-      <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
-    </a>
-    <div class="text-end mb-1 mb-md-0 me-5">
-      <a href="{% url 'login' %}" class="btn btn-warning p-1 ms-auto">Retour</a>
-    </div>
+  <a href="{% url 'login' %}" class="text-decoration-none me-auto">
+    <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
+  </a>
+  <div class="text-end mb-1 mb-md-0 me-5">
+    <a href="{% url 'login' %}" class="btn btn-warning p-1 ms-auto">Retour</a>
+  </div>
 </div>
 {% endblock %}
 
 {% block content %}
 <div class="card bg-light mb-0 mt-0 mb-sm-3 mt-sm-3 offset-2 col-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4">
-    <div class="card-body">
-      <h4 class="card-title text-center">Création d'un compte</h4>
-      <form class="container mt-3">
-        {% csrf_token %}
-        <p>
-            <label for="profileType">Vous êtes :</label> 
-            <select id="profileType">
-                <option value="student" {% if studentForm.is_bound %} select="selected" {% endif %}>
-                    Etudiant 
-                </option> 
-                <option value="employee" {% if employeeForm.is_bound %} select="selected" {% endif %}>
-                    Employé 
-                </option>
-            </select>
-        </p>
+  <div class="card-body">
+    <h4 class="card-title text-center">Création d'un compte</h4>
+    <form class="container mt-3">
+      {% csrf_token %}
+      <p>
+        <label for="profileType">Vous êtes :</label> 
+        <select id="profileType">
+          <option value="student" {% if studentForm.is_bound %} select="selected" {% endif %}>
+            Etudiant 
+          </option> 
+          <option value="employee" {% if employeeForm.is_bound %} select="selected" {% endif %}>
+            Employé 
+          </option>
+        </select>
+      </p>
     </form>
-    <form method="GET" action="" id="studentForm" class="container mt-3">
-        {% csrf_token %}
-        {% bootstrap_form studentForm %}
-        <p>
-            <input type="hidden" name="profileType" value="student"/>
-            <button class="btn btn-primary p-1 me-1 mb-1 mb-sm-0" type="submit">Créer un compte</button>
-        </p> 
+    <form method="GET" action="" id="studentForm" class="container mt-3" name="studentForm">
+      {% csrf_token %}
+      {% bootstrap_form studentForm %}
+      <p>
+        <input type="hidden" name="profileType" value="student"/>
+        <button class="btn btn-primary p-1 me-1 mb-1 mb-sm-0" type="submit">Créer un compte</button>
+      </p> 
     </form>
-    <form method="GET" action="" id="employeeForm" class="container mt-3">
-        {% csrf_token %}
-        {% bootstrap_form employeeForm %}
-        <p>
-            <input type="hidden" name="profileType" value="employee"/>
-            <button class="btn btn-primary p-1 me-1 mb-1 mb-sm-0" type="submit">Créer un compte</button>
-        </p> 
+    <form method="GET" action="" id="employeeForm" class="container mt-3" name="employeeForm">
+      {% csrf_token %}
+      {% bootstrap_form employeeForm %}
+      <p>
+        <input type="hidden" name="profileType" value="employee"/>
+        <button class="btn btn-primary p-1 me-1 mb-1 mb-sm-0" type="submit">Créer un compte</button>
+      </p> 
     </form>
-    </div>
   </div>
+</div>
 
 
 {% block javascript %}
 <script defer type="text/javascript">
-    function displayRightForm(){
-        if($('#profileType').val() === 'student'){
-            $('#employeeForm').hide(); 
-            $('#studentForm').show();
-        }
-        else{
-            $('#studentForm').hide()
-            $('#employeeForm').show() 
-        }
+  function displayRightForm(){
+    if($('#profileType').val() === 'student'){
+      $('#employeeForm').hide(); 
+      $('#studentForm').show();
     }
-    $(document).ready(displayRightForm);
-    $('#profileType').change(displayRightForm);
+    else{
+      $('#studentForm').hide()
+      $('#employeeForm').show() 
+    }
+  }
+  $(document).ready(displayRightForm);
+  $('#profileType').change(displayRightForm);
     
-    function checkEmailField(){
-        //alert('Courriel introduit. On va maintenant le valider.')
-        let fieldValue = $('input#id_st-email').val();
-        $.ajax({
-            url: "{% url 'ajax_check_email_field' %}",
-            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
-            type: 'GET',
-            success: function(data, textStatus, XMLHttpRequest){
-                if (data != ''){
-                    //alert(data);
-                    $('input#id_st-email').parent().prev('.errorlist').remove();
-                    $('input#id_st-email').parent().before(data);
-                }
-            }
-        })
-        
-        fieldValue = $('input#id_em-email').val();
-        $.ajax({
-            url: "{% url 'ajax_check_email_field' %}",
-            data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
-            type: 'GET',
-            success: function(data, textStatus, XMLHttpRequest){
-                if (data != ''){
-                    $('input#id_em-email').parent().prev('.errorlist').remove();
-                    $('input#id_em-email').parent().before(data);
-                }
-            }
-        })
-    }
-    $(document).ready(function(){$('input#id_st-email').focusout(checkEmailField)});
-    $(document).ready(function(){$('input#id_em-email').focusout(checkEmailField)});
+  function checkEmailField(){
+    //alert('Courriel introduit. On va maintenant le valider.')
+    let fieldValue = $('input#id_st-email').val();
+    $.ajax({
+      url: "{% url 'ajax_check_email_field' %}",
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
+      type: 'GET',
+      success: function(data, textStatus, XMLHttpRequest){
+        if (data != ''){
+          //alert(data);
+          $('input#id_st-email').parent().prev('.errorlist').remove();
+          $('input#id_st-email').parent().before(data);
+        }
+      }
+    })
+    
+    fieldValue = $('input#id_em-email').val();
+    $.ajax({
+      url: "{% url 'ajax_check_email_field' %}",
+      data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'value': fieldValue},
+      type: 'GET',
+      success: function(data, textStatus, XMLHttpRequest){
+        if (data != ''){
+          $('input#id_em-email').parent().prev('.errorlist').remove();
+          $('input#id_em-email').parent().before(data);
+        }
+      }
+    })
+  }
+  $(document).ready(function(){$('input#id_st-email').focusout(checkEmailField)});
+  $(document).ready(function(){$('input#id_em-email').focusout(checkEmailField)});
+  
+  function confirmRegistration(e){
+    e.preventDefault;
+    alert("Compte créé avec succès !");
+    //return false;
+  }
+  $(document).ready(function(){$('#studentForm').submit(confirmRegistration)});
+  $(document).ready(function(){$('#employeeForm').submit(confirmRegistration)});
 </script>
 {% endblock javascript %}   
 

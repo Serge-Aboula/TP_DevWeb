@@ -9,11 +9,11 @@
 {% block bodyId %}modifyProfilePage{% endblock %}
 
 {% block headerContent %}
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+<div class="d-flex flex-wrap gap-1 gap-md-0 align-items-center justify-content-center justify-content-lg-start">
   <a href="{% url 'login' %}" class="text-decoration-none me-auto">
     <img src="{% static 'img/logo.jpg' %}" class="img-fluid" alt="logo">
   </a>
-  <div class="text-end me-5">
+  <div class="text-end mb-1 mb-md-0 me-5">
     <a href="{% url 'welcome' %}" class="btn btn-warning p-1 ms-auto">Retour</a>
   </div>
 </div>
@@ -23,7 +23,7 @@
 <div class="card bg-light mb-0 mt-0 mb-sm-3 mt-sm-3 offset-2 col-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4">
   <div class="card-body">
     <h4 class="card-title text-center">Modification de mon profil</h4>
-    <form method="GET" action="">
+    <form method="GET" action="" id="form-modify" name="form-modify">
       {% csrf_token %}
       {% bootstrap_form form %}
       <button class="btn btn-primary p-1 me-1 mb-2 mb-sm-0" type="submit">Modifier</button>
@@ -31,16 +31,16 @@
   </div>
 </div>
 
+{% block javascript %}
+<script defer type="text/javascript">    
+  function confirmModification(e){
+    e.preventDefault;
+    alert("Modification effectuée avec succès !");
+    //return false;
+  }
+  $(document).ready(function(){$('#form-modify').submit(confirmModification)});
+</script>
+{% endblock javascript %}
 {% endblock %}
 
-{% comment %} {% block javascript %}
-<script defer>    
-    function confirmModification(e){
-        e.preventDefault;
-        alert("Modification effectuée avec succès !");
-        //return false;
-    }
-    $(document).ready(function(){$('p.buttonAction').submit(confirmModification)});
-</script>
-{% endblock javascript %} {% endcomment %}
     
